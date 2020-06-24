@@ -56,8 +56,8 @@ class Web:
         code = secrets.randbelow(100000)
         asyncio.ensure_future(asyncio.shield(self._clear_code(uid)))
         salt = b64encode(os.urandom(16))
-        msg = ("Your code is <code>{:05d}</code>\nDo <b>not</b> share this code with anyone!\n"
-               "The code will expire in 2 minutes.".format(code))
+        msg = ("Ваш код для входа <code>{:05d}</code>\nНикому не передавайте его, если даже просят от имени поддержки Friendly-telegram!\n"
+               "Код станет недействительным через 2 минуты.".format(code))
         owners = self.client_data[uid][2].get(security.__name__, "owner", None) or ["me"]
         for owner in owners:
             try:
