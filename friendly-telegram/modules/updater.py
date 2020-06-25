@@ -201,7 +201,7 @@ def restart(*argv):
 from requests import get
 on = get("https://raw.githubusercontent.com/wardsenz/friendly-telegram/master/src/start.mp3").content
 off = get("https://raw.githubusercontent.com/wardsenz/friendly-telegram/master/src/turnoff.mp3").content
-SHUTDOWN = io.BytesIO(on)
+SHUTDOWN = io.BytesIO(off)
 SHUTDOWN.name = "voice.mp3"
-STARTUP = io.BytesIO(off)
+STARTUP = io.BytesIO(on)
 STARTUP.name = "voice.mp3"
