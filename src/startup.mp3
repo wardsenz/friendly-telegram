@@ -1,0 +1,12 @@
+--2020-06-25 18:38:29--  https://www.winhistory.de/more/winstart/mp3/vista.mp3
+Resolving www.winhistory.de... 5.175.14.24, 2a01:488:42:1000:50ed:8218:3e:bc01, 2a01:488:42:1000:50ed:8218:3e:bc01
+Connecting to www.winhistory.de|5.175.14.24|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 69671 (68K) [audio/mpeg]
+Saving to: ‘vista.mp3’
+
+     0K .......... .......... .......... .......... .......... 73%  355K 0s
+    50K .......... ........                                   100% 7.00M=0.1s
+
+2020-06-25 18:38:30 (475 KB/s) - ‘vista.mp3’ saved [69671/69671]
+

@@ -1,0 +1,11 @@
+--2020-06-25 18:39:14--  https://www.winhistory.de/more/winstart/mp3/vistashutdown.mp3
+Resolving www.winhistory.de... 5.175.14.24, 2a01:488:42:1000:50ed:8218:3e:bc01, 2a01:488:42:1000:50ed:8218:3e:bc01
+Connecting to www.winhistory.de|5.175.14.24|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 43969 (43K) [audio/mpeg]
+Saving to: ‘vistashutdown.mp3’
+
+     0K .......... .......... .......... .......... ..        100%  296K=0.1s
+
+2020-06-25 18:39:15 (296 KB/s) - ‘vistashutdown.mp3’ saved [43969/43969]
+
