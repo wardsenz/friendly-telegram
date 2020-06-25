@@ -1,7 +1,10 @@
-!!!
-=> [ORIGINAL SOURCE CODE](https://gitlab.com/friendly-telegram/friendly-telegram) <=
-!!!
-## (!)
+-----
+=> [Source code on Gitlab](https://gitlab.com/friendly-telegram)
+=> [Author](https://gitlab.com/hackintosh5)
+-----
+
+
+## Инфо
 1. Это всё делалось для себя.
 2. Нет смысла ставить этот мод НЕ на хероку. Если у вас vds/termux/ноут с линуксом, ставьте оригинальную версию.
 3. Установщик PowerShell сломан. С винды не поставите никак. Ссылка на оригинал выше.
