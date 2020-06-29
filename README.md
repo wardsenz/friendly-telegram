@@ -18,11 +18,11 @@
 - Возможно ещё будут и другие изменения.
 
 ### Установка:
-- Только Termux: `(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgi) --no-web)`
+- Только Termux: `(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgimod) --no-web)`
 Вводите APP_ID, API_HASH, номер телефона и код. Дождитесь запуска, когда напишет "Started for <id>".
 Последующие запуски - `cd $HOME/friendly-telegram && python3 -m friendly-telegram`
 
-- На Heroku через Termux: `(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgi) --heroku --no-web)`.
+- На Heroku через Termux: `(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgimod) --heroku --no-web)`.
 Начальный запуск идентичный с примером выше, только в этом случае Вам потребуется ещё и API Key (ключ) с сайта Heroku.
 
 
