@@ -190,6 +190,14 @@ fi
 
 runout $PKGMGR neofetch dialog
 
+# Termux: python ssl error fix
+if echo "$OSTYPE" | grep -qE '^linux-android.*'; then
+  if dpkg -s | grep "Package: openssl" > /dev/null; then
+  	echo ""
+  else runout apt-get install openssl -y;
+  fi
+fi
+
 ##############################################################################
 
 SUDO_CMD=""
