@@ -194,7 +194,7 @@ fi
 if cat /etc/os-release | grep -qE 'Alpine' && [ -f '/etc/alpine-release' ]; then
 	runout $PKGMGR "python$PYVER-dev"
 	runout $PKGMGR "python$PYVER-pip"
-	runout $PKGMGR py-pip py3-setuptools build-base libwebp-dev libjpeg-turbo libffi-dev libwebp libxslt
+	runout $PKGMGR py-pip py3-setuptools build-base libwebp-dev libjpeg libjpeg-turbo-dev libffi-dev libwebp libxslt zlib-dev
 fi
 
 runout $PKGMGR neofetch dialog
