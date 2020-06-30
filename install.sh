@@ -159,7 +159,7 @@ elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/arch-release' ]; the
     fi
   fi
   PYVER="3"
-elif cat /etc/os-release | grep -qE 'Alpine' && [ -f '/etc/alpine-release' ]; then
+elif cat /etc/os-release > /dev/null 2>&1 | grep -qE 'Alpine' && [ -f '/etc/alpine-release' ]; then
 	PKGMGR="apk add"
 	PYVER="3"
 elif echo "$OSTYPE" | grep -qE '^linux-android.*'; then
@@ -191,7 +191,7 @@ elif echo "$OSTYPE" | grep -qE '^darwin.*'; then
   runout $PKGMGR jpeg webp
 fi
 
-if cat /etc/os-release | grep -qE 'Alpine' && [ -f '/etc/alpine-release' ]; then
+if cat /etc/os-release > /dev/null 2>&1 | grep -qE 'Alpine' && [ -f '/etc/alpine-release' ]; then
 	runout $PKGMGR "python$PYVER-dev"
 	runout $PKGMGR "python$PYVER-pip"
 	runout $PKGMGR py-pip py3-setuptools build-base libwebp-dev libjpeg libjpeg-turbo-dev libffi-dev libwebp libxslt zlib-dev
