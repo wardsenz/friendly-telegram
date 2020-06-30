@@ -159,6 +159,9 @@ elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/arch-release' ]; the
     fi
   fi
   PYVER="3"
+elif cat /etc/os-release | grep -qE 'Alpine' && [ -f '/etc/alpine-release' ]; then
+	PKGMGR="apk add"
+	PYVER="3"
 elif echo "$OSTYPE" | grep -qE '^linux-android.*'; then
   runout apt-get update
   PKGMGR="apt-get install -y"
@@ -186,6 +189,12 @@ elif echo "$OSTYPE" | grep -qE '^linux-android.*'; then
   runout $PKGMGR libjpeg-turbo libwebp libffi libcairo build-essential libxslt libiconv
 elif echo "$OSTYPE" | grep -qE '^darwin.*'; then
   runout $PKGMGR jpeg webp
+fi
+
+if cat /etc/os-release | grep -qE 'Alpine' && [ -f '/etc/alpine-release' ]; then
+	runout $PKGMGR "python$PYVER-dev"
+	runout $PKGMGR "python$PYVER-pip"
+	runout $PKGMGR py-pip py3-setuptools build-base libwebp-dev libjpeg-turbo libffi-dev libwebp libxslt
 fi
 
 runout $PKGMGR neofetch dialog
