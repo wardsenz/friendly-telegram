@@ -22,71 +22,86 @@
 - (!) Подробный гайд для Alpine Linux ниже. Так как устройств на iOS у меня нет, пожалуйста, отпишитесь автору/в чат о результате, если даже никаких ошибок не было. А так же ищу добровольцев для дальнейших тестов.
 - (!²) На стадии доработки. У большинства встречаются проблемы с конфигами.
 Если `.neofetch` не реагирует, попробуйте это:
+
 `.terminal git clone https://github.com/dylanaraps/neofetch`
 `.terminal cd n* && make PREFIX=/app/.apt/usr install`
+
 Слетит после повторного деплоя или перезагрузки, но пока что это оптимальное решение. 
 [Источник](https://github.com/dylanaraps/neofetch/issues/1371)
 
-### Установка:
-- Только Termux: `(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgimod) --no-web)`
-Вводите APP_ID, API_HASH, номер телефона и код. Дождитесь запуска, когда напишет "Started for <id>".
-Последующие запуски - `cd $HOME/friendly-telegram && python3 -m friendly-telegram`
+## Установка:
 
-- На Heroku через Termux: `(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgimod) --heroku --no-web)`
-Начальный запуск идентичный с примером выше, только в этом случае Вам потребуется ещё и API Key (ключ) с сайта Heroku.
+* ### Termux
 
 
-- Telegram App_ID и Api_hash - [Тут](https://my.telegram.org/apps)
-- Heroku Api Key - [Тут](https://dashboard.heroku.com)
+	```sh
+	(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgimod) --no-web)
+	```
 
 
-### Alpine Linux (iPhone iSh)
-1. Обновляем список пакетов и сами пакеты.
-- $`apk update && apk upgrade`
-	![Обновление](src/apk_update.jpg)
-2. Скачиваем необходимые пакеты bash.
-- $`apk add bash bash-completion sudo nano`
-	![Установка bash](src/apk_bash.jpg)
-3. Используя nano (или любой другой редактор) открываем конфигурационный файл passwd в папке /etc.
-- $`nano /etc/passwd`
-	![Файл passwd](src/nano_passwd.jpg)
-Видим первую строку с нашем именем пользователя и путь к shell по умолчанию. В моем случае это `root`, потому что в системе нет других пользователей - 
-- `root:x:0:0:root:/root:/bin/ash`.
-	![Файл passwd](src/nano_passwd1.jpg)
-Заменяем `ash` (иногда может быть просто`sh`) => `bash`. Получится как-то так:
-- `root:x:0:0:root:/root:/bin/bash`
-	![Файл passwd](src/nano_passwd2.jpg)
-Сохраняем и идём дальше.
-
-- (! Не нужно обращаться к автору/чат поддержки с вопросами по типу _"Как редактировать?"_, _"Как сделать *что-то*_" и особенно с _"Что дальше?"_. В интернете сотни гайдов на эти темы. Пишите только в случае ошибки в самом скрипте или гайде.)
-
-4. Редактируем теперь /etc/profile и добавим переменную SHELL ниже остальных переменных.
-- $`nano /etc/profile` - добавим в список экспортов следующее: `export SHELL=/bin/bash`
-	![Файл profile](src/nano_profile.jpg)
-5. Закрываем консоль командой **exit** и открываем, чтобы изменения уж точно сработали.
-
-Проверим shell, в котором мы находимся:
-- `echo "$OSTYPE"`.
-	![Успех](src/echo_ostype.jpg)
+	Вводите APP_ID, API_HASH, номер телефона и код. Дождитесь запуска, когда напишет "Started for <id>".
+	Последующие запуски -
 	
-Получили **linux-musl**? Успех. Идём дальше.
-А если пустота - значит где-то и что-то сделали не так. Повторите шаги 3-4.
+	```sh
+	cd $HOME/friendly-telegram && python3 -m friendly-telegram
+	```
 
-6. Запуск
-- $`git clone https://github.com/wardsenz/friendly-telegram`
-- $`cd friendly-telegram`
-- $`bash install.sh --heroku --no-web`
+* ### На Heroku через Termux
 
-Локальный сервер работать не будет, ставим только на Heroku.
-Выполняем команду и ждём, ждём, и снова ждём. 
-7. И у нас хорошие новости :)
-	![Успешная установка и запуск интерфейса настроек](src/successfully.jpg)
+	```sh
+	(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgimod) --heroku --no-web)
+	```
+
+	Начальный запуск идентичный с примером выше, только в этом случае Вам потребуется ещё и API Key (ключ) с сайта Heroku.
+
+
+	- Telegram App_ID и Api_hash - [Тут](https://my.telegram.org/apps)
+	- Heroku Api Key - [Тут](https://dashboard.heroku.com)
+
+
+* ### Alpine Linux (iPhone iSh)
+	1. Обновляем список пакетов и сами пакеты.
+		- $`apk update && apk upgrade`
+		![Обновление](src/apk_update.jpg)
+	2. Скачиваем необходимые пакеты bash.
+		- $`apk add bash bash-completion sudo nano`
+		![Установка bash](src/apk_bash.jpg)
+	3. Используя nano (или любой другой редактор) открываем конфигурационный файл passwd в папке /etc.
+		- $`nano /etc/passwd`
+		![Файл passwd](src/nano_passwd.jpg)
+		Видим первую строку с нашем именем пользователя и путь к shell по умолчанию. В моем случае это `root`, потому что в системе нет других пользователей - 
+		- `root:x:0:0:root:/root:/bin/ash`.
+		![Файл passwd](src/nano_passwd1.jpg)
+		Заменяем `ash` (иногда может быть просто`sh`) => `bash`. Получится как-то так:
+		- `root:x:0:0:root:/root:/bin/bash`
+		![Файл passwd](src/nano_passwd2.jpg)
+		Сохраняем и идём дальше.
+		- (! Не нужно обращаться к автору/чат поддержки с вопросами по типу _"Как редактировать?"_, _"Как сделать *что-то*_" и особенно с _"Что дальше?"_. В интернете сотни гайдов на эти темы. Пишите только в случае ошибки в самом скрипте или гайде.)
+	4. Редактируем теперь /etc/profile и добавим переменную SHELL ниже остальных переменных.
+		- $`nano /etc/profile` - добавим в список экспортов следующее: `export SHELL=/bin/bash`
+		![Файл profile](src/nano_profile.jpg)
+	5. Закрываем консоль командой **exit** и открываем, чтобы изменения уж точно сработали.
+		Проверим shell, в котором мы находимся:
+		- `echo "$OSTYPE"`.
+		![Успех](src/echo_ostype.jpg)
+		Получили **linux-musl**? Успех. Идём дальше.
+		А если пустота - значит где-то и что-то сделали не так. Повторите шаги 3-4.
+
+	6. Запуск
+		- $`git clone https://github.com/wardsenz/friendly-telegram`
+		- $`cd friendly-telegram`
+		- $`bash install.sh --heroku --no-web`
+		Локальный сервер работать не будет, ставим только на Heroku.
+		Выполняем команду и ждём, ждём, и снова ждём. 
+	7. И у нас хорошие новости :)
+		![Успешная установка и запуск интерфейса настроек](src/successfully.jpg)
+
 	
-	![Конец](src/successfully1.jpg)
+		![Конец](src/successfully1.jpg)
 
-Вводим API_HASH, API_ID и Heroku API_KEY - логинимся.
-И поздравляю, мы победили Купертино.
-Проверяем `.ping` и вступаем в чат поддержки.
+	Вводим API_HASH, API_ID и Heroku API_KEY - логинимся.
+	И поздравляю, мы победили Купертино.
+	Проверяем `.ping` и вступаем в чат поддержки.
 
 
 ### Важно
