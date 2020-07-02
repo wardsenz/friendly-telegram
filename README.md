@@ -82,13 +82,13 @@
 		![Файл profile](src/nano_profile.jpg)
 	5. Закрываем консоль командой **exit** и открываем, чтобы изменения уж точно сработали.
 		Проверим shell, в котором мы находимся:
-		- `echo "$OSTYPE`.
+		- `echo "$OSTYPE"`.
 		![Успех](src/echo_ostype.jpg)
 		Получили **linux-musl**? Успех. Идём дальше.
 		А если пустота - значит где-то и что-то сделали не так. Повторите шаги 3-4.
 
 	6. Запуск установщика
-		- $`(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgimod) --heroku --no-web)`
+		- $`(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgimod) --heroku --no-web)`<br>
 		Так как это iOS, с локальным сервером могут быть проблемы и вообще мало кто будет держать бот на iPhone. Поэтому ставим на Heroku.
 		![Установщик](src/installer.jpg)
 		Выполняем команду и ждём, ждём, и снова ждём. 
