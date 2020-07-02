@@ -22,8 +22,8 @@
 - (!) Подробный гайд для Alpine Linux ниже. Так как устройств на iOS у меня нет, пожалуйста, отпишитесь автору/в чат о результате, если даже никаких ошибок не было. А так же ищу добровольцев для дальнейших тестов.
 - (!²) На стадии доработки. У большинства встречаются проблемы с конфигами.
 Если `.neofetch` не реагирует, попробуйте это:
-	`.terminal git clone https://github.com/dylanaraps/neofetch`
-	`.terminal cd n* && make PREFIX=/app/.apt/usr install`
+`.terminal git clone https://github.com/dylanaraps/neofetch`
+`.terminal cd n* && make PREFIX=/app/.apt/usr install`
 Слетит после повторного деплоя или перезагрузки, но пока что это оптимальное решение. 
 [Источник](https://github.com/dylanaraps/neofetch/issues/1371)
 
@@ -42,32 +42,34 @@
 
 ### Alpine Linux (iPhone iSh)
 1. Обновляем список пакетов и сами пакеты.
-	$`apk update && apk upgrade`
+- $`apk update && apk upgrade`
 	![Обновление](src/apk_update.jpg)
 2. Скачиваем необходимые пакеты bash.
-	$`apk add bash bash-completion sudo nano`
+- $`apk add bash bash-completion sudo nano`
 	![Установка bash](src/apk_bash.jpg)
 3. Используя nano (или любой другой редактор) открываем конфигурационный файл passwd в папке /etc.
-	$`nano /etc/passwd`
+- $`nano /etc/passwd`
 	![Файл passwd](src/nano_passwd.jpg)
-Видим первую строку с нашем именем пользователя и путь к shell по умолчанию. В моем случае это `root`, потому что в системе нет других пользователей - `root:x:0:0:root:/root:/bin/ash`.
+Видим первую строку с нашем именем пользователя и путь к shell по умолчанию. В моем случае это `root`, потому что в системе нет других пользователей - 
+- `root:x:0:0:root:/root:/bin/ash`.
 	![Файл passwd](src/nano_passwd1.jpg)
 Заменяем `ash` (иногда может быть просто`sh`) => `bash`. Получится как-то так:
-`root:x:0:0:root:/root:/bin/bash`
+- `root:x:0:0:root:/root:/bin/bash`
 	![Файл passwd](src/nano_passwd2.jpg)
 Сохраняем и идём дальше.
-(! Не нужно обращаться к автору/чат поддержки с вопросами по типу _"Как редактировать?"_, _"Как сделать *что-то*_" и особенно с _"Что дальше?"_. В интернете сотни гайдов на эти темы. Пишите только в случае ошибки в самом скрипте или гайде.)
+- (! Не нужно обращаться к автору/чат поддержки с вопросами по типу _"Как редактировать?"_, _"Как сделать *что-то*_" и особенно с _"Что дальше?"_. В интернете сотни гайдов на эти темы. Пишите только в случае ошибки в самом скрипте или гайде.)
 4. Редактируем теперь /etc/profile и добавим переменную SHELL ниже остальных переменных.
-	$`nano /etc/profile` - добавим в список экспортов следующее: `export SHELL=/bin/bash`
+- $`nano /etc/profile` - добавим в список экспортов следующее: `export SHELL=/bin/bash`
 	![Файл profile](src/nano_profile.jpg)
 5. Закрываем консоль командой **exit** и открываем, чтобы изменения уж точно сработали.
-Проверим shell, в котором мы находимся: `echo "$OSTYPE`.
+Проверим shell, в котором мы находимся:
+- `echo "$OSTYPE`.
 	![Успех](src/echo_ostype.jpg)
 Получили **linux-musl**? Успех. Идём дальше.
 А если пустота - значит где-то и что-то сделали не так. Повторите шаги 3-4.
 
 6. Запуск установщика
-	$`(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgimod) --heroku --no-web)`
+- $`(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgimod) --heroku --no-web)`
 	Так как это iOS, с локальным сервером могут быть проблемы и вообще мало кто будет держать бот на iPhone. Поэтому ставим на Heroku.
 	![Установщик](src/installer.jpg)
 Выполняем команду и ждём, ждём, и снова ждём. 
@@ -75,6 +77,7 @@
 	![Успешная установка и запуск интерфейса настроек](src/successfully.jpg)
 	
 	![Конец](src/successfully1.jpg)
+
 Вводим API_HASH, API_ID и Heroku API_KEY - логинимся.
 И поздравляю, мы победили Купертино.
 Проверяем `.ping` и вступаем в чат поддержки.
