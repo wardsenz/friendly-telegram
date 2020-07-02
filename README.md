@@ -87,10 +87,11 @@
 		Получили **linux-musl**? Успех. Идём дальше.
 		А если пустота - значит где-то и что-то сделали не так. Повторите шаги 3-4.
 
-	6. Запуск установщика
-		- $`(. <($(which curl>/dev/null&&echo curl -Ls||echo wget -qO-) https://kutt.it/ftgimod) --heroku --no-web)`<br>
-		Так как это iOS, с локальным сервером могут быть проблемы и вообще мало кто будет держать бот на iPhone. Поэтому ставим на Heroku.
-		![Установщик](src/installer.jpg)
+	6. Запуск
+		- $`git clone https://github.com/wardsenz/friendly-telegram`
+		- $`cd friendly-telegram`
+		- $`bash install.sh --heroku --no-web`
+		Локальный сервер работать не будет, ставим только на Heroku.
 		Выполняем команду и ждём, ждём, и снова ждём. 
 	7. И у нас хорошие новости :)
 		![Успешная установка и запуск интерфейса настроек](src/successfully.jpg)
