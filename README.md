@@ -23,8 +23,8 @@
 - (!²) На стадии доработки. У большинства встречаются проблемы с конфигами.
 Если `.neofetch` не реагирует, попробуйте это:
 
-    $`.terminal git clone https://github.com/dylanaraps/neofetch`
-    $`.terminal cd n* && make PREFIX=/app/.apt/usr install`
+    $ `.terminal git clone https://github.com/dylanaraps/neofetch`
+    $ `.terminal cd n* && make PREFIX=/app/.apt/usr install`
 
 Слетит после повторного деплоя или перезагрузки, но пока что это оптимальное решение. 
 [Источник](https://github.com/dylanaraps/neofetch/issues/1371)
@@ -118,20 +118,19 @@
 * #### **No module named requests**
   - Попробуйте вручную установить зависимости, т.к. инсталлер мог попросту пропустить их:
   - 
-  -   $`cd && cd friendly-telegram`
-  -   $`pip3 install -r requirements.txt`
-
+  -   $ `cd && cd friendly-telegram`
+  -   $ `pip3 install -r requirements.txt`
 * #### **The SSL module is not available**
     Отсутствует или не обновлен пакет openssl
     
-      $`apt update`
-      $`apt install --only-upgrade openssl`
+      $ `apt update`
+      $ `apt install --only-upgrade openssl`
       
 * #### **No module named friendly-telegram.__main__**
     Запускать надо модуль, а не папку с ботом
     
-      $`cd && cd friendly-telegram`
-      $`python3 -m friendly-telegram <аргументы>`
+      $ `cd && cd friendly-telegram`
+      $ `python3 -m friendly-telegram <аргументы>`
       
 * #### **/dev/fd/63: No such file or directory**
     Чаще появляется на Alpine iSh iOS. Причины:
