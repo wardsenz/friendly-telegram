@@ -116,22 +116,23 @@
 ### Возможные ошибки
 
 * #### **No module named requests**
-  - Попробуйте вручную установить зависимости, т.к. инсталлер мог попросту пропустить их:
-  - 
-  -   $ `cd && cd friendly-telegram`
-  -   $ `pip3 install -r requirements.txt`
+Попробуйте вручную установить зависимости, т.к. инсталлер мог попросту пропустить их:
+    ```sh
+    cd && cd friendly-telegram
+    pip3 install -r requirements.txt
+    ```
 * #### **The SSL module is not available**
     Отсутствует или не обновлен пакет openssl
-    
-      $ `apt update`
-      $ `apt install --only-upgrade openssl`
-      
+    ```sh
+      apt update
+      apt install --only-upgrade openssl
+      ```
 * #### **No module named friendly-telegram.__main__**
     Запускать надо модуль, а не папку с ботом
-    
-      $ `cd && cd friendly-telegram`
-      $ `python3 -m friendly-telegram <аргументы>`
-      
+    ```sh
+      cd && cd friendly-telegram
+      python3 -m friendly-telegram <аргументы>
+      ```
 * #### **/dev/fd/63: No such file or directory**
     Чаще появляется на Alpine iSh iOS. Причины:
     - Не установлен/добавлен в систему bash - шаги 3-4 в гайде выше.
