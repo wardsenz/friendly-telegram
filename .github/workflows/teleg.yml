@@ -1,0 +1,2 @@
+- name: Telegram Message Notify
+  uses: appleboy/telegram-action@v0.0.8
