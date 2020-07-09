@@ -1,4 +1,4 @@
-name: GitHub Actions (ftg-mod-tg)
+name: ftg-mod
 on: [push, pull_request, pull_request_review, pull_request_review_comment, fork, issues]
 jobs:
 
@@ -13,4 +13,4 @@ jobs:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         format: markdown
-        message: "⚠️ Новый ивент *${{github.event.name}}* от: ${{github.actor}}.\n*Репозиторий: *${{github.repository}}\n*Сообщение: *${{github.event.head_commit.message}}\n----\n*Сборка:* ${{github.run_id}}\n*Статус: *${{job.status}}\n*Выполнено на: *${{runner.os}}\n*Дополнительная информация: *[по ссылке](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}})\n"
+        message: "⚠️ Новый ивент *${{github.event.name}}* от: ${{github.actor}}.\n*Репозиторий: *${{github.repository}}\n*Сообщение: *${{github.event.head_commit.message}}\n----\n*Статус: *${{job.status}}\n*Дополнительная информация: *[по ссылке](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}})\n"
