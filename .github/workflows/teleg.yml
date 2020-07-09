@@ -1,2 +1,15 @@
-- name: Telegram Message Notify
-  uses: appleboy/telegram-action@v0.0.8
+name: GitHub Actions tgbot
+on: [push]
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: send custom message with args
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        args: Its a github-event-name: ${{ github.event_name }}
