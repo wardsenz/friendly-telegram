@@ -36,21 +36,21 @@ logger = logging.getLogger(__name__)
 
 @loader.tds
 class UpdaterMod(loader.Module):
-    """Updates itself"""
-    strings = {"name": "Updater",
-               "source": "<b>Read the source code from</b> <a href='{}'>here</a>",
-               "restarting_caption": "<b>Restarting...</b>",
-               "downloading": "<b>Downloading updates...</b>",
-               "downloaded": ("<b>Downloaded successfully.\nPlease type</b> "
-                              "<code>.restart</code> <b>to restart the bot.</b>"),
-               "already_updated": "<b>Already up to date!</b>",
-               "installing": "<b>Installing updates...</b>",
-               "success": "<b>Restart successful!</b>",
-               "success_meme": "<b>Restart failed successfully‽</b>",
-               "heroku_warning": ("Heroku API key has not been set. Update was successful but updates will "
-                                  "reset every time the bot restarts."),
-               "origin_cfg_doc": "Git origin URL, for where to update from",
-               "audio_cfg_doc": "Whether Windows XP sounds should be played during restart"}
+    """Обновляет самого себя"""
+    strings = {"name": "Обновления",
+               "source": "<b>Исходный код доступен</b> <a href='{}'>здесь</a>",
+               "restarting_caption": "<b>Перезапуск ...</b>",
+               "downloading": "<b>Загрузка обновлений ...</b>",
+               "downloaded": ("<b>Загружен успешно.\nПожалуйста введите</b> "
+                              "<code>.restart</code> <b>чтобы перезапустить бота.</b>"),
+               "already_updated": "<b>Уже в обновлён!</b>",
+               "installing": "<b>Установка обновлений ...</b>",
+               "success": "<b>Перезагрузка прошла успешно! </b>",
+               "success_meme": "<b>Перезагрузка успешно провалилась‽</b>",
+               "heroku_warning": ("Ключ API Heroku не был установлен. Обновление прошло успешно, но обновления будут "
+                                  "сбрасываться каждый раз, когда бот перезапускается."),
+               "origin_cfg_doc": "URL источника Git, для которого нужно обновить",
+               "audio_cfg_doc": "Должны ли звуки Windows 7 воспроизводиться при перезагрузке"}
 
     def __init__(self):
         self.config = loader.ModuleConfig("GIT_ORIGIN_URL",
@@ -60,7 +60,7 @@ class UpdaterMod(loader.Module):
 
     @loader.owner
     async def restartcmd(self, message):
-        """Restarts the userbot"""
+        """Перезапускает юзербот"""
         if self.config["AUDIO"]:
             msg = (await utils.answer(message, SHUTDOWN, voice_note=True,
                                       caption=self.strings("restarting_caption", message)))[0]
@@ -92,7 +92,7 @@ class UpdaterMod(loader.Module):
 
     @loader.owner
     async def downloadcmd(self, message):
-        """Downloads userbot updates"""
+        """Загружает обновления юзербота"""
         message = await utils.answer(message, self.strings("downloading", message))
         await self.download_common()
         await utils.answer(message, self.strings("downloaded", message))
@@ -120,7 +120,7 @@ class UpdaterMod(loader.Module):
 
     def req_common(self):
         # Now we have downloaded new code, install requirements
-        logger.debug("Installing new requirements...")
+        logger.debug("Установка новых зависимостей...")
         try:
             subprocess.run([sys.executable, "-m", "pip", "install", "-r",
                             os.path.join(os.path.dirname(utils.get_base_dir()), "requirements.txt"), "--user"])
@@ -129,7 +129,7 @@ class UpdaterMod(loader.Module):
 
     @loader.owner
     async def updatecmd(self, message):
-        """Downloads userbot updates"""
+        """Обновляет юзербот"""
         # We don't really care about asyncio at this point, as we are shutting down
         msgs = await utils.answer(message, self.strings("downloading", message))
         req_update = await self.download_common()
@@ -161,7 +161,7 @@ class UpdaterMod(loader.Module):
 
     @loader.unrestricted
     async def sourcecmd(self, message):
-        """Links the source code of this project"""
+        """Ссылки на исходный код этого проекта"""
         await utils.answer(message, self.strings("source", message).format(self.config["GIT_ORIGIN_URL"]))
 
     async def client_ready(self, client, db):

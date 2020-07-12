@@ -25,9 +25,9 @@ logger = logging.getLogger(__name__)
 
 @loader.tds
 class UniborgConfigMod(loader.Module):
-    """Stores configuration for Uniborg modules"""
-    strings = {"name": "Uniborg configuration placeholder",
-               "cfg_doc": "External configuration item"}
+    """Хранит конфигурацию для модулей Uniborg"""
+    strings = {"name": "Конфигурация Uniborg",
+               "cfg_doc": "Внешний элемент конфигурации"}
 
     def __init__(self):
         self.config = filter(lambda x: len(x) and x.upper() == x, uniborg.UniborgConfig.__all__)

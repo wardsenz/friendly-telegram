@@ -27,9 +27,9 @@ logger = logging.getLogger(__name__)
 
 @loader.tds
 class LoggerMod(loader.Module):
-    """Description for module"""
-    strings = {"name": "Logger",
-               "log_id_cfg": "Chat ID where logs are saved"}
+    """Описание для модуля"""
+    strings = {"name": "Логгер",
+               "log_id_cfg": "ID чата, в котором сохраняются логи"}
 
     def __init__(self):
         self.config = loader.ModuleConfig("LOG_ID", None, lambda m: self.strings("log_id_cfg", m))
@@ -56,7 +56,7 @@ class LoggerMod(loader.Module):
         return message
 
     async def _log(self, type, group, affected_uids, data):
-        """Logs an operation to the group"""
+        """Записывает операцию в группу"""
         chat = None
         if self.config["LOG_ID"]:
             try:
