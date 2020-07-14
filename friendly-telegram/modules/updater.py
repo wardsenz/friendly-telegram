@@ -43,7 +43,7 @@ class UpdaterMod(loader.Module):
                "downloading": "<b>Загрузка обновлений ...</b>",
                "downloaded": ("<b>Загружен успешно.\nПожалуйста введите</b> "
                               "<code>.restart</code> <b>чтобы перезапустить бота.</b>"),
-               "already_updated": "<b>Уже в обновлён!</b>",
+               "already_updated": "<b>Уже обновлён!</b>",
                "installing": "<b>Установка обновлений ...</b>",
                "success": "<b>Перезагрузка прошла успешно! </b>",
                "success_meme": "<b>Перезагрузка успешно провалилась‽</b>",
