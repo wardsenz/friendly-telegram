@@ -36,7 +36,7 @@ class NoCollisionsMod(loader.Module):
         try:
             await message.edit("<code>DEADBEEF</code>")
             await asyncio.sleep(5)
-            await utils.answer(message, self.strings("убито", message))
+            await utils.answer(message, self.strings("killed", message))
         except telethon.errors.rpcerrorlist.MessageNotModifiedError:
             [handler] = logging.getLogger().handlers
             handler.setLevel(logging.CRITICAL)
