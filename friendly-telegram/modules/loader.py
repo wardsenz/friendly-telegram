@@ -89,7 +89,7 @@ class LoaderMod(loader.Module):
                "repo_config_doc": "Полноценный URL для репо модуля",
                "avail_header": "<b>Доступны официальные модули из репо</b>",
                "select_preset": "<b>Пожалуйста, выберите пресет</b>",
-               "no_preset": "<b>Пресет не найден>",
+               "no_preset": "<b>Пресет не найден</b>",
                "preset_loaded": "<b>Пресет загружен</b>",
                "no_module": "<b>Модуль недоступен в репо.</b>",
                "no_file": "<b>Файл не найден</b>",
