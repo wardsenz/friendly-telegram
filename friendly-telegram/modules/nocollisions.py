@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 class NoCollisionsMod(loader.Module):
     """Убеждается, что одновременно работает только 1 юзербот"""
     strings = {"name": "Анти-столкновения ботов",
-               "killed": "<b>Убивает все другие юзерботы</b>"}
+               "killed": "<b>Все другие юзерботы убиты</b>"}
 
     @loader.owner
     async def cleanbotscmd(self, message):
