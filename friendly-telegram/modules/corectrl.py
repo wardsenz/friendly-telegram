@@ -22,28 +22,28 @@ import telethon
 
 @loader.tds
 class CoreMod(loader.Module):
-    """Control core userbot settings"""
-    strings = {"name": "Settings",
-               "too_many_args": "<b>Too many args</b>",
-               "blacklisted": "<b>Chat {} blacklisted from userbot</b>",
-               "unblacklisted": "<b>Chat {} unblacklisted from userbot</b>",
-               "user_blacklisted": "<b>User {} blacklisted from userbot</b>",
-               "user_unblacklisted": "<b>User {} unblacklisted from userbot</b>",
-               "what_prefix": "<b>What should the prefix be set to?</b>",
-               "prefix_set": ("<b>Command prefix updated. Type</b> <code>{newprefix}setprefix {oldprefix}"
-                              "</code> <b>to change it back</b>"),
-               "alias_created": "<b>Alias created. Access it with</b> <code>{}</code>",
-               "no_command": "<b>Command</b> <code>{}</code> <b>does not exist</b>",
-               "alias_args": "<b>You must provide a command and the alias for it</b>",
-               "delalias_args": "<b>You must provide the alias name</b>",
-               "alias_removed": "<b>Alias</b> <code>{}</code> <b>removed.",
-               "no_alias": "<b>Alias</b> <code>{}</code> <b>does not exist</b>",
-               "no_pack": "<b>What translation pack should be added?</b>",
-               "bad_pack": "<b>Invalid translation pack specified</b>",
-               "trnsl_saved": "<b>Translation pack added</b>",
-               "packs_cleared": "<b>Translations cleared</b>",
-               "lang_set": "<b>Language changed</b>",
-               "db_cleared": "<b>Database cleared</b>"}
+    """Управление основными настройками бота"""
+    strings = {"name": "Настройки",
+               "too_many_args": "<b>Слишком много аргументов</b>",
+               "blacklisted": "<b>Чат {} занесен в черный список бота.</b>",
+               "unblacklisted": "<b>Чат {} больше не в черном списке.</b>",
+               "user_blacklisted": "<b>Пользователь {} занесен в черный список бота.</b>",
+               "user_unblacklisted": "<b>Пользователь {} убран из черного списка.</b>",
+               "what_prefix": "<b>Какой префикс должен быть установлен?</b>",
+               "prefix_set": ("<b>Обновлен префикс комманд. Введите</b> <code>{newprefix}setprefix {oldprefix}"
+                              "</code> <b>чтобы вернуть его обратно.</b>"),
+               "alias_created": "<b>Алиас создан. Быстрый доступ: </b> <code>{}</code>",
+               "no_command": "<b>Команда</b> <code>{}</code> <b>не найдена.</b>",
+               "alias_args": "<b>Вы должны предоставить команду и алиас к ней.</b>",
+               "delalias_args": "<b>Вы должны предоставить нужный алиас.</b>",
+               "alias_removed": "<b>Алиас</b> <code>{}</code> <b>удален.",
+               "no_alias": "<b>Алиас</b> <code>{}</code> <b>не найден.</b>",
+               "no_pack": "<b>Какой пакет перевода хотите добавить?</b>",
+               "bad_pack": "<b>Указан неверный пакет перевода</b>",
+               "trnsl_saved": "<b>Пакет перевода добавлен</b>",
+               "packs_cleared": "<b>Установленные пакеты удалены.</b>",
+               "lang_set": "<b>Язык сменен</b>",
+               "db_cleared": "<b>База данных очищена</b>"}
 
     async def client_ready(self, client, db):
         self._db = db
@@ -70,14 +70,14 @@ class CoreMod(loader.Module):
 
     async def blacklistcmd(self, message):
         """.blacklist [id]
-           Blacklist the bot from operating somewhere"""
+           Черный список бота, где он не может работать"""
         chatid = await self.blacklistcommon(message)
         self._db.set(main.__name__, "blacklist_chats", self._db.get(main.__name__, "blacklist_chats", []) + [chatid])
         await utils.answer(message, self.strings("blacklisted", message).format(chatid))
 
     async def unblacklistcmd(self, message):
         """.unblacklist [id]
-           Unblacklist the bot from operating somewhere"""
+           Удаление из черного списка"""
         chatid = await self.blacklistcommon(message)
         self._db.set(main.__name__, "blacklist_chats",
                      list(set(self._db.get(main.__name__, "blacklist_chats", [])) - set([chatid])))
@@ -99,14 +99,14 @@ class CoreMod(loader.Module):
 
     async def blacklistusercmd(self, message):
         """.blacklistuser [id]
-           Prevent this user from running any commands"""
+           Запрет пользователю запускать любые команды"""
         user = await self.getuser(message)
         self._db.set(main.__name__, "blacklist_users", self._db.get(main.__name__, "blacklist_users", []) + [user])
         await utils.answer(message, self.strings("user_blacklisted", message).format(user))
 
     async def unblacklistusercmd(self, message):
         """.unblacklistuser [id]
-           Allow this user to run permitted commands"""
+           Разрешить этому пользователю запускать разрешенные команды"""
         user = await self.getuser(message)
         self._db.set(main.__name__, "blacklist_users",
                      list(set(self._db.get(main.__name__, "blacklist_users", [])) - set([user])))
@@ -114,7 +114,7 @@ class CoreMod(loader.Module):
 
     @loader.owner
     async def setprefixcmd(self, message):
-        """Sets command prefix"""
+        """Устанавливает префикс команды"""
         args = utils.get_args(message)
         if len(args) == 0:
             await utils.answer(message, self.strings("what_prefix", message))
@@ -126,7 +126,7 @@ class CoreMod(loader.Module):
 
     @loader.owner
     async def addaliascmd(self, message):
-        """Set an alias for a command"""
+        """Установка алиаса для команды"""
         args = utils.get_args(message)
         if len(args) != 2:
             await utils.answer(message, self.strings("alias_args", message))
@@ -141,7 +141,7 @@ class CoreMod(loader.Module):
 
     @loader.owner
     async def delaliascmd(self, message):
-        """Remove an alias for a command"""
+        """Удалить алиас для команды"""
         args = utils.get_args(message)
         if len(args) != 1:
             await utils.answer(message, self.strings("delalias_args", message))
@@ -157,9 +157,9 @@ class CoreMod(loader.Module):
             await utils.answer(message, self.strings("no_alias", message).format(utils.escape_html(alias)))
 
     async def addtrnslcmd(self, message):
-        """Add a translation pack
+        """Добавить пакет перевода
            .addtrnsl <pack>
-           Restart required after use"""
+           После использования нужно перезагрузить"""
         args = utils.get_args(message)
         if len(args) != 1:
             await utils.answer(message, self.strings("no_pack", message))
@@ -193,22 +193,22 @@ class CoreMod(loader.Module):
                 await utils.answer(message, self.strings("bad_pack", message))
 
     async def cleartrnslcmd(self, message):
-        """Remove all translation packs"""
+        """Удалить все пакеты переводов"""
         self._db.set(main.__name__, "langpacks", [])
         await utils.answer(message, self.strings("packs_cleared", message))
 
     async def setlangcmd(self, message):
-        """Change the preferred language used for translations
-           Specify the language as space separated list of ISO 639-1 language codes in order of preference (e.g. fr en)
-           With no parameters, all translations are disabled
-           Restart required after use"""
+        """Изменить предпочитаемый язык для переводов
+           Укажите язык как разделенный пробелами список кодов языка ISO 639-1 в порядке предпочтения (например, fr en)
+           Без параметров отключает все переводы
+           После использования нужно перезагрузить"""
         langs = utils.get_args(message)
         self._db.set(main.__name__, "language", langs)
         await utils.answer(message, self.strings("lang_set", message))
 
     @loader.owner
     async def cleardbcmd(self, message):
-        """Clears the entire database, effectively performing a factory reset"""
+        """Очищает всю базу данных, эффективно выполняя сброс настроек"""
         self._db.clear()
         await self._db.save()
         await utils.answer(message, self.strings("db_cleared", message))
