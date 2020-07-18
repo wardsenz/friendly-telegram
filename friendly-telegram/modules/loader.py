@@ -37,7 +37,11 @@ USER_INSTALL = "PIP_TARGET" not in os.environ and "VIRTUAL_ENV" not in os.enviro
 
 
 class StringLoader(SourceLoader):  # pylint: disable=W0223 # False positive, implemented in SourceLoader
+<<<<<<< HEAD
     """Load a python module/file from a string"""
+=======
+    """Загрузка модулей / файл Python"""
+>>>>>>> upstream/master
     def __init__(self, data, origin):
         if isinstance(data, str):
             self.data = data.encode("utf-8")
@@ -84,6 +88,7 @@ def unescape_percent(text):
 
 @loader.tds
 class LoaderMod(loader.Module):
+<<<<<<< HEAD
     """Loads modules"""
     strings = {"name": "Loader",
                "repo_config_doc": "Fully qualified URL to a module repo",
@@ -103,6 +108,27 @@ class LoaderMod(loader.Module):
                "requirements_failed": "<b>Requirements installation failed</b>",
                "requirements_installing": "<b>Installing requirements...</b>",
                "requirements_restart": "<b>Requirements installed, but a restart is required</b>"}
+=======
+    """Загружает модули"""
+    strings = {"name": "Загрузчик",
+               "repo_config_doc": "Полноценный URL для репо модуля",
+               "avail_header": "<b>Доступны официальные модули из репо</b>",
+               "select_preset": "<b>Пожалуйста, выберите пресет</b>",
+               "no_preset": "<b>Пресет не найден</b>",
+               "preset_loaded": "<b>Пресет загружен</b>",
+               "no_module": "<b>Модуль недоступен в репо.</b>",
+               "no_file": "<b>Файл не найден</b>",
+               "provide_module": "<b>Предоставить модуль для загрузки</b>",
+               "bad_unicode": "<b>Неверное форматирование Unicode в модуле</b>",
+               "load_failed": "<b>Загрузка не удалась. Смотрите логи для деталей.</b>",
+               "loaded": "<b>Модуль загружен.</b>",
+               "no_class": "<b>Какой модуль нужно выгрузить?</b>",
+               "unloaded": "<b>Модуль выгружен.</b>",
+               "not_unloaded": "<b>Модуль не выгружен.</b>",
+               "requirements_failed": "<b>Установка зависимостей не удалась</b>",
+               "requirements_installing": "<b>Установка зависимостей...</b>",
+               "requirements_restart": "<b>Зависимости установлены, но требуется перезагрузка</b>"}
+>>>>>>> upstream/master
 
     def __init__(self):
         super().__init__()
@@ -112,7 +138,11 @@ class LoaderMod(loader.Module):
 
     @loader.owner
     async def dlmodcmd(self, message):
+<<<<<<< HEAD
         """Downloads and installs a module from the official module repo"""
+=======
+        """Скачивает и устанавливает модуль из официального репо модуля"""
+>>>>>>> upstream/master
         args = utils.get_args(message)
         if args:
             if await self.download_and_install(args[0], message):
@@ -125,7 +155,11 @@ class LoaderMod(loader.Module):
 
     @loader.owner
     async def dlpresetcmd(self, message):
+<<<<<<< HEAD
         """Set preset. Defaults to full"""
+=======
+        """Установить пресет. По умолчанию full"""
+>>>>>>> upstream/master
         args = utils.get_args(message)
         if not args:
             await utils.answer(message, self.strings("select_preset", message))
@@ -171,7 +205,11 @@ class LoaderMod(loader.Module):
 
     @loader.owner
     async def loadmodcmd(self, message):
+<<<<<<< HEAD
         """Loads the module file"""
+=======
+        """Загружает файл модуля"""
+>>>>>>> upstream/master
         if message.file:
             msg = message
         else:
@@ -192,7 +230,11 @@ class LoaderMod(loader.Module):
         else:
             path = None
             doc = await msg.download_media(bytes)
+<<<<<<< HEAD
         logger.debug("Loading external module...")
+=======
+        logger.debug("Загрузка внешнего модуля ...")
+>>>>>>> upstream/master
         try:
             doc = doc.decode("utf-8")
         except UnicodeDecodeError:
@@ -214,7 +256,11 @@ class LoaderMod(loader.Module):
                 spec = ModuleSpec(module_name, StringLoader(doc, origin), origin=origin)
                 instance = self.allmodules.register_module(spec, module_name)
             except ImportError:
+<<<<<<< HEAD
                 logger.info("Module loading failed, attemping dependency installation", exc_info=True)
+=======
+                logger.info("Ошибка загрузки модуля, попытка установки зависимостей", exc_info=True)
+>>>>>>> upstream/master
                 # Let's try to reinstall dependencies
                 requirements = list(filter(lambda x: x and x[0] not in ("-", "_", "."),
                                            map(str.strip, VALID_PIP_PACKAGES.search(doc)[1].split(" "))))
@@ -259,7 +305,11 @@ class LoaderMod(loader.Module):
 
     @loader.owner
     async def unloadmodcmd(self, message):
+<<<<<<< HEAD
         """Unload module by class name"""
+=======
+        """Выгружает модуль по названию"""
+>>>>>>> upstream/master
         args = utils.get_args(message)
         if not args:
             await utils.answer(message, self.strings("no_class", message))

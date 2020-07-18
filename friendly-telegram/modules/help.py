@@ -26,27 +26,27 @@ logger = logging.getLogger(__name__)
 
 @loader.tds
 class HelpMod(loader.Module):
-    """Provides this help message"""
-    strings = {"name": "Help",
-               "bad_module": "<b>Invalid module name specified</b>",
-               "single_mod_header": ("<b>Help for</b> <u>{}</u>:\nNote that the monospace text are the commands "
-                                     "and they can be run with <code>{}&lt;command&gt;</code>"),
+    """Предоставляет это справочное сообщение"""
+    strings = {"name": "Помощь",
+               "bad_module": "<b>Указано неверное имя модуля</b>",
+               "single_mod_header": ("<b>Помощь для</b> <u>{}</u>:\nОбратите внимание, что моноширинный текст - это команды "
+                                     "и они могут быть запущены с <code>{}&lt;command&gt;</code>"),
                "single_cmd": "\n• <code><u>{}</u></code>\n",
-               "undoc_cmd": "There is no documentation for this command",
-               "all_header": ("<b>Help for</b> <a href='https://t.me/friendlytgbot'>Friendly-Telegram</a>\n"
-                              "For more help on how to use a command, type <code>{}help &lt;module name&gt;</code>\n\n"
-                              "<b>Available Modules:</b>"),
+               "undoc_cmd": "Для этой команды нет документации",
+               "all_header": ("<b>Помощь для</b> <a href='https://t.me/friendlytgbot'>Friendly-Telegram</a> <a href='https://t.me/wardsenz'>Mod</a>\n"
+                              "Для получения дополнительной информации о том, как использовать команду, введите <code>{}help &lt;имя модуля&gt;</code>\n\n"
+                              "<b>Доступные модули:</b>"),
                "mod_tmpl": "\n• <b>{}</b>",
                "first_cmd_tmpl": ": <code>{}",
                "cmd_tmpl": ", {}",
-               "footer": ("\n\nYou can <b>read more</b> about most commands "
-                          "<a href='https://friendly-telegram.gitlab.io'>here</a>"),
-               "joined": "<b>Joined to</b> <a href='https://t.me/friendlytgbot'>support channel</a>",
-               "join": "<b>Join the</b> <a href='https://t.me/friendlytgbot'>support channel</a>"}
+               "footer": ("\n\nВы можете <b>узнать</b> о большинстве команд "
+                          "<a href='https://ftg-ru.ga'>тут</a>"),
+               "joined": "<b>Присоединился к</b> <a href='https://t.me/wardsenz'>каналу поддержки</a>",
+               "join": "<b>Присоединяйся к</b> <a href='https://t.me/friendlytgbot'>каналу поддержки</a>"}
 
     @loader.unrestricted
     async def helpcmd(self, message):
-        """.help [module]"""
+        """.help [модуль]"""
         args = utils.get_args_raw(message)
         if args:
             module = None
@@ -68,7 +68,7 @@ class HelpMod(loader.Module):
             if module.__doc__:
                 reply += "\n" + "\n".join("  " + t for t in utils.escape_html(inspect.getdoc(module)).split("\n"))
             else:
-                logger.warning("Module %s is missing docstring!", module)
+                logger.warning("В модуле %s отсутствует строка документации!", module)
             commands = {name: func for name, func in module.commands.items()
                         if await self.allmodules.check_security(message, func)}
             for name, fun in commands.items():
@@ -102,9 +102,9 @@ class HelpMod(loader.Module):
 
     @loader.unrestricted
     async def supportcmd(self, message):
-        """Joins the support chat"""
+        """Присоединяется в чат поддержки"""
         if not self.is_bot and await self.allmodules.check_security(message, security.OWNER | security.SUDO):
-            await self.client(JoinChannelRequest("https://t.me/friendlytgbot"))
+            await self.client(JoinChannelRequest("https://t.me/wardsenz"))
             await utils.answer(message, self.strings("joined", message))
         else:
             await utils.answer(message, self.strings("join", message))

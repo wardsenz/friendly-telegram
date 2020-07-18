@@ -18,7 +18,7 @@
 
 if [ ! -n "$BASH" ]; then
   echo "Non-bash shell detected, fixing..."
-  bash -c '. <('"$(command -v curl >/dev/null && echo 'curl -Ls' || echo 'wget -qO-')"' https://kutt.it/ftgi) '"$*"
+  bash -c '. <('"$(command -v curl >/dev/null && echo 'curl -Ls' || echo 'wget -qO-')"' https://raw.githubusercontent.com/wardsenz/friendly-telegram/master/install.sh) '"$*"
   exit $?
 fi
 
@@ -135,7 +135,7 @@ if echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/debian_version' ]; the
     if command -v sudo >/dev/null; then
       endspin "Restarting as root..."
       echo "Relaunching" >>ftg-install.log
-      sudo "$BASH" -c '. <('"$(command -v curl >/dev/null && echo 'curl -Ls' || echo 'wget -qO-')"' https://kutt.it/ftgi) '"$*"
+      sudo "$BASH" -c '. <('"$(command -v curl >/dev/null && echo 'curl -Ls' || echo 'wget -qO-')"' https://raw.githubusercontent.com/wardsenz/friendly-telegram/master/install.sh) '"$*"
       exit $?
     else
       PKGMGR="true"
@@ -152,13 +152,18 @@ elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/arch-release' ]; the
     if command -v sudo >/dev/null; then
       endspin "Restarting as root..."
       echo "Relaunching" >>ftg-install.log
-      sudo "$BASH" -c '. <('"$(command -v curl >/dev/null && echo 'curl -Ls' || echo 'wget -qO-')"' https://kutt.it/ftgi) '"$*"
+      sudo "$BASH" -c '. <('"$(command -v curl >/dev/null && echo 'curl -Ls' || echo 'wget -qO-')"' https://raw.githubusercontent.com/wardsenz/friendly-telegram/master/install.sh) '"$*"
       exit $?
     else
       PKGMGR="true"
     fi
   fi
   PYVER="3"
+
+# Для Alpine iSh. Сначала нужно поставить bash. Как - читайте README.
+elif echo "$OSTYPE" | grep -qE '^linux-musl.*' && [ -f '/etc/alpine-release' ]; then
+	PKGMGR="apk add"
+	PYVER="3"
 elif echo "$OSTYPE" | grep -qE '^linux-android.*'; then
   runout apt-get update
   PKGMGR="apt-get install -y"
@@ -190,6 +195,19 @@ fi
 
 runout $PKGMGR neofetch dialog
 
+if echo "$OSTYPE" | grep -qE '^linux-musl.*' && [ -f '/etc/alpine-release' ]; then
+	runout $PKGMGR "python$PYVER-dev"
+	runout $PKGMGR "python$PYVER-pip"
+	runout $PKGMGR py-pip py3-setuptools build-base libwebp-dev libjpeg libjpeg-turbo-dev libffi-dev libwebp libxslt zlib-dev
+fi
+
+runout $PKGMGR neofetch dialog
+
+# Termux: python ssl error fix
+if echo "$OSTYPE" | grep -qE '^linux-android.*'; then
+	runout apt-get install --only-upgrade openssl -y;
+fi
+
 ##############################################################################
 
 SUDO_CMD=""
@@ -202,7 +220,7 @@ fi
 # shellcheck disable=SC2086
 ${SUDO_CMD}rm -rf friendly-telegram
 # shellcheck disable=SC2086
-runout ${SUDO_CMD}git clone https://gitlab.com/friendly-telegram/friendly-telegram || { errorout "Clone failed."; exit 3; }
+runout ${SUDO_CMD}git clone https://github.com/wardsenz/friendly-telegram || { errorout "Clone failed."; exit 3; }
 cd friendly-telegram || { endspin "Failed to chdir"; exit 7; }
 # shellcheck disable=SC2086
 runin ${SUDO_CMD}"python$PYVER" -m pip install --upgrade pip setuptools wheel --user

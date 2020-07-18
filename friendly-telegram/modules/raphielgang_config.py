@@ -25,9 +25,9 @@ logger = logging.getLogger(__name__)
 
 @loader.tds
 class RaphielgangConfigMod(loader.Module):
-    """Stores configuration for Raphielgang modules"""
-    strings = {"name": "Raphielgang Configuration Placeholder",
-               "cfg_doc": "External configuration item"}
+    """Конфигурация для модулей Raphielgang"""
+    strings = {"name": "Конфигурация Raphielgang",
+               "cfg_doc": "Внешний элемент конфигурации"}
 
     def __init__(self):
         self.config = filter(lambda x: len(x) and x.upper() == x, userbot.__all__)

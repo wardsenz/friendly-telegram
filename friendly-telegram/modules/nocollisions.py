@@ -26,13 +26,13 @@ logger = logging.getLogger(__name__)
 
 @loader.tds
 class NoCollisionsMod(loader.Module):
-    """Makes sure only 1 userbot is running at a time"""
-    strings = {"name": "Anti-collisions",
-               "killed": "<b>All userbots killed</b>"}
+    """Убеждается, что одновременно работает только 1 юзербот"""
+    strings = {"name": "Анти-столкновения ботов",
+               "killed": "<b>Все другие юзерботы убиты</b>"}
 
     @loader.owner
     async def cleanbotscmd(self, message):
-        """Kills all userbots except 1, selected according to which is fastest (approx)"""
+        """Убивает всех юзоботов, кроме 1, выбранного в соответствии с самым быстрым (приблизительно)"""
         try:
             await message.edit("<code>DEADBEEF</code>")
             await asyncio.sleep(5)

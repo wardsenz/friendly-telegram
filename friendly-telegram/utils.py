@@ -213,7 +213,7 @@ async def answer(message, response, **kwargs):
                                       parse_mode=lambda t: (t, response.entities or []),
                                       link_preview=isinstance(response.media, MessageMediaWebPage)),)
         else:
-            txt = "<b>Loading message...</b>"
+            txt = "<b>Загрузка сообщения...</b>"
             new = await (message.edit if edit else message.reply)(txt)
             ret = (await message.respond(response, **kwargs),)
             await new.delete()
@@ -228,7 +228,7 @@ async def answer(message, response, **kwargs):
         if message.media is not None and edit:
             await message.edit(file=response, **kwargs)
         else:
-            txt = "<b>Loading media...</b>"  # TODO translations
+            txt = "<b>Загрузка медиа...</b>"  # TODO translations
             new = await (message.edit if edit else message.reply)(txt)
             kwargs.setdefault("reply_to", message.reply_to_msg_id if await message.get_reply_message() else message.id)
             ret = (await message.client.send_file(message.chat_id, response,

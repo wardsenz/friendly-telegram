@@ -37,8 +37,7 @@ def publish(clients, key, api_token=None, create_new=True, full_match=False):
     if api_token is not None:
         config["api_id"] = api_token.ID
         config["api_hash"] = api_token.HASH
-    app.update_buildpacks(["https://github.com/heroku/heroku-buildpack-python",
-                           "https://gitlab.com/friendly-telegram/heroku-buildpack"])
+    app.update_buildpacks(["https://github.com/heroku/heroku-buildpack-python","https://gitlab.com/friendly-telegram/heroku-buildpack", "https://github.com/heroku/heroku-buildpack-apt"])
     repo = get_repo()
     url = app.git_url.replace("https://", "https://api:" + key + "@")
     if "heroku" in repo.remotes:
@@ -66,7 +65,7 @@ def get_app(authorization_strings, key, api_token=None, create_new=True, full_ma
         if api_token is None or not create_new:
             logging.error("%r", {app: repr(app.config) for app in heroku.apps()})
             raise RuntimeError("Could not identify app!")
-        app = heroku.create_app(stack_id_or_name="heroku-18", region_id_or_name="us")
+        app = heroku.create_app(stack_id_or_name="heroku-18", region_id_or_name="eu")
         config = app.config()
     return app, config
 
@@ -77,7 +76,7 @@ def get_repo():
         repo = Repo(os.path.dirname(utils.get_base_dir()))
     except InvalidGitRepositoryError:
         repo = Repo.init(os.path.dirname(utils.get_base_dir()))
-        origin = repo.create_remote("origin", "https://gitlab.com/friendly-telegram/friendly-telegram")
+        origin = repo.create_remote("origin", "https://github.com/wardsenz/friendly-telegram")
         origin.fetch()
         repo.create_head("master", origin.refs.master)
         repo.heads.master.set_tracking_branch(origin.refs.master)
