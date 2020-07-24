@@ -30,13 +30,14 @@ logger = logging.getLogger(__name__)
 
 @loader.tds
 class PythonMod(loader.Module):
-    """Питон"""
+    """Python stuff"""
     strings = {"name": "Python",
-               "evaluated": "<b>Выполнение кода:</b>\n<code>{}</code>\n<b>Возвращаемое значение:</b>\n<code>{}</code>",
-               "evaluate_fail": ("<b>Не удалось выполнить:</b>\n<code>{}</code>"
-                                 "\n\n<b>Из-за</b>:\n<code>{}</code>"),
-               "execute_fail": ("<b>Не удалось выполнить выражение:</b>\n<code>{}</code>"
-                                "\n\n<b>Из-за:</b>\n<code>{}</code>")}
+               "evaluated": "<b>Выполненное выражение:</b>\n<code>{}</code>\n<b>Возвращено:</b>\n<code>{}</code>",
+               "evaluate_fail": ("<code>eval:</code> <b>Не удалось выполнить выражение:</b>\n<code>{}</code>"
+                                 "\n\n<b>Ошибка:</b>\n<code>{}</code>"),
+               "execute_fail": ("<code>exec:</code> <b>Не удалось выполнить выражение:</b>\n<code>{}</code>"
+                                "\n\n<b>Ошибка:</b>\n<code>{}</code>"),
+               "n_protect": "НОМЕР_СКРЫТ"}
 
     async def client_ready(self, client, db):
         self.client = client
@@ -46,33 +47,38 @@ class PythonMod(loader.Module):
     async def evalcmd(self, message):
         """.eval <выражение>
            Выполняет выражение Python"""
+        phone = message.client.phone
         ret = self.strings("evaluated", message)
         try:
             it = await meval(utils.get_args_raw(message), globals(), **await self.getattrs(message))
         except Exception:
             exc = sys.exc_info()
             exc = "".join(traceback.format_exception(exc[0], exc[1], exc[2].tb_next.tb_next.tb_next))
+            exc = exc.replace(str(phone), n_protect, len(str(phone)))
             await utils.answer(message, self.strings("evaluate_fail", message)
                                .format(utils.escape_html(utils.get_args_raw(message)), utils.escape_html(exc)))
             return
         ret = ret.format(utils.escape_html(utils.get_args_raw(message)), utils.escape_html(it))
+        ret = ret.replace(str(phone), n_protect, len(str(phone)))
         await utils.answer(message, ret)
 
     @loader.owner
     async def execcmd(self, message):
         """.exec <код>
            Выполняет код Python"""
+        phone = message.client.phone
         try:
             await meval(utils.get_args_raw(message), globals(), **await self.getattrs(message))
         except Exception:
             exc = sys.exc_info()
             exc = "".join(traceback.format_exception(exc[0], exc[1], exc[2].tb_next.tb_next.tb_next))
+            exc = exc.replace(str(phone), n_protect, len(str(phone)))
             await utils.answer(message, self.strings("execute_fail", message)
                                .format(utils.escape_html(utils.get_args_raw(message)), utils.escape_html(exc)))
             return
 
     async def getattrs(self, message):
-        return {"message": message, "client": self.client, "self": self, "db": self.db,
+        return {"message": message, "event": message, "client": self.client, "self": self, "db": self.db,
                 "reply": await message.get_reply_message(), **self.get_types(), **self.get_functions()}
 
     def get_types(self):
