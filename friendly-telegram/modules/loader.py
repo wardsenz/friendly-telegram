@@ -102,7 +102,8 @@ class LoaderMod(loader.Module):
                "not_unloaded": "<b>Модуль не выгружен.</b>",
                "requirements_failed": "<b>Установка зависимостей не удалась</b>",
                "requirements_installing": "<b>Установка зависимостей...</b>",
-               "requirements_restart": "<b>Зависимости установлены, но требуется перезагрузка</b>"}
+               "requirements_restart": "<b>Зависимости установлены, но требуется перезагрузка</b>",
+               "scam_module": "<b>Осторожно, в модуле найден SCAM-код! Пожалуйста, отправьте репорт на автора или тому, кто Вам предоставил этот модуль! Чат: @friendlytgbot_ru</b>"}
 
     def __init__(self):
         super().__init__()
@@ -167,6 +168,9 @@ class LoaderMod(loader.Module):
                 await utils.answer(message, self.strings("no_module", message))
             return False
         r.raise_for_status()
+        if "DeleteAccountRequest" in r.content.decode("utf-8"):
+            await utils.answer(message, self.strings("scam_module", message))
+            return
         return await self.load_module(r.content.decode("utf-8"), message, module_name, url)
 
     @loader.owner
@@ -195,6 +199,9 @@ class LoaderMod(loader.Module):
         logger.debug("Загрузка внешнего модуля ...")
         try:
             doc = doc.decode("utf-8")
+            if "DeleteAccountRequest" in doc:
+                await utils.answer(message, self.strings("scam_module", message))
+                return
         except UnicodeDecodeError:
             await utils.answer(message, self.strings("bad_unicode", message))
             return
