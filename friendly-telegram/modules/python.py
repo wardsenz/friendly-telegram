@@ -33,10 +33,11 @@ class PythonMod(loader.Module):
     """Python stuff"""
     strings = {"name": "Python",
                "evaluated": "<b>Выполненное выражение:</b>\n<code>{}</code>\n<b>Возвращено:</b>\n<code>{}</code>",
-               "evaluate_fail": ("<b>(eval)Не удалось выполнить выражение:</b>\n<code>{}</code>"
+               "evaluate_fail": ("<code>eval:</code> <b>Не удалось выполнить выражение:</b>\n<code>{}</code>"
                                  "\n\n<b>Ошибка:</b>\n<code>{}</code>"),
-               "execute_fail": ("<b>(exec)Не удалось выполнить выражение:</b>\n<code>{}</code>"
-                                "\n\n<b>Ошибка:</b>\n<code>{}</code>")}
+               "execute_fail": ("<code>exec:</code> <b>Не удалось выполнить выражение:</b>\n<code>{}</code>"
+                                "\n\n<b>Ошибка:</b>\n<code>{}</code>"),
+               "n_protect": "НОМЕР_СКРЫТ"}
 
     async def client_ready(self, client, db):
         self.client = client
@@ -53,12 +54,12 @@ class PythonMod(loader.Module):
         except Exception:
             exc = sys.exc_info()
             exc = "".join(traceback.format_exception(exc[0], exc[1], exc[2].tb_next.tb_next.tb_next))
-            exc = exc.replace(str(phone), "❚"*len(str(phone)))
+            exc = exc.replace(str(phone), n_protect, len(str(phone)))
             await utils.answer(message, self.strings("evaluate_fail", message)
                                .format(utils.escape_html(utils.get_args_raw(message)), utils.escape_html(exc)))
             return
         ret = ret.format(utils.escape_html(utils.get_args_raw(message)), utils.escape_html(it))
-        ret = ret.replace(str(phone), "❚"*len(str(phone)))
+        ret = ret.replace(str(phone), n_protect, len(str(phone)))
         await utils.answer(message, ret)
 
     @loader.owner
@@ -71,7 +72,7 @@ class PythonMod(loader.Module):
         except Exception:
             exc = sys.exc_info()
             exc = "".join(traceback.format_exception(exc[0], exc[1], exc[2].tb_next.tb_next.tb_next))
-            exc = exc.replace(str(phone), "❚"*len(str(phone)))
+            exc = exc.replace(str(phone), n_protect, len(str(phone)))
             await utils.answer(message, self.strings("execute_fail", message)
                                .format(utils.escape_html(utils.get_args_raw(message)), utils.escape_html(exc)))
             return
