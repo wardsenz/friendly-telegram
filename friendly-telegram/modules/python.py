@@ -54,12 +54,12 @@ class PythonMod(loader.Module):
         except Exception:
             exc = sys.exc_info()
             exc = "".join(traceback.format_exception(exc[0], exc[1], exc[2].tb_next.tb_next.tb_next))
-            exc = exc.replace(str(phone), n_protect, len(str(phone)))
+            exc = exc.replace(str(phone), n_protect)
             await utils.answer(message, self.strings("evaluate_fail", message)
                                .format(utils.escape_html(utils.get_args_raw(message)), utils.escape_html(exc)))
             return
         ret = ret.format(utils.escape_html(utils.get_args_raw(message)), utils.escape_html(it))
-        ret = ret.replace(str(phone), n_protect, len(str(phone)))
+        ret = ret.replace(str(phone), n_protect)
         await utils.answer(message, ret)
 
     @loader.owner
@@ -72,7 +72,7 @@ class PythonMod(loader.Module):
         except Exception:
             exc = sys.exc_info()
             exc = "".join(traceback.format_exception(exc[0], exc[1], exc[2].tb_next.tb_next.tb_next))
-            exc = exc.replace(str(phone), n_protect, len(str(phone)))
+            exc = exc.replace(str(phone), n_protect)
             await utils.answer(message, self.strings("execute_fail", message)
                                .format(utils.escape_html(utils.get_args_raw(message)), utils.escape_html(exc)))
             return
