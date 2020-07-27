@@ -95,7 +95,7 @@ class LoaderMod(loader.Module):
                "no_file": "<b>Файл не найден</b>",
                "provide_module": "<b>Предоставить модуль для загрузки</b>",
                "bad_unicode": "<b>Неверное форматирование Unicode в модуле</b>",
-               "load_failed": "<b>Загрузка не удалась. Смотрите логи для деталей.</b>",
+               "load_failed": "<b>Загрузка не удалась. Смотрите логи для подробностей.</b>",
                "loaded": "<b>Модуль загружен.</b>",
                "no_class": "<b>Какой модуль нужно выгрузить?</b>",
                "unloaded": "<b>Модуль выгружен.</b>",
@@ -108,7 +108,7 @@ class LoaderMod(loader.Module):
     def __init__(self):
         super().__init__()
         self.config = loader.ModuleConfig("MODULES_REPO",
-                                          "https://gitlab.com/friendly-telegram/modules-repo/-/raw/master",
+                                          "https://github.com/wardsenz/modules-repo/raw/master",
                                           lambda m: self.strings("repo_config_doc", m))
 
     @loader.owner
