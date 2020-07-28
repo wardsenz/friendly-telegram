@@ -54,8 +54,8 @@ class TestMod(loader.Module):
                "no_logs": "<b>У вас нет логов на уровне {}.</b>",
                "logs_filename": "ftg-logs.txt",
                "logs_caption": "Friendly-telegram логи с уровнем {}",
-               "logs_unsafe": ("<b>Предупреждение: выполнение этой команды может раскрыть личную или опасную информацию. "
-                               "Ты можешь написать</b> <code>{}</code> <b>в конце, если понимаешь что делаешь!</b>"),
+               "logs_unsafe": ("<b>ПРЕДУПРЕЖДЕНИЕ: Выполнение этой команды может раскрыть личную или опасную информацию! "
+                               "Вы можете написать</b> <code>{}</code> <b>в конце, если понимаете, что делаете!</b>"),
                "logs_force": "FORCE_INSECURE",
                "suspend_invalid_time": "<b>Неверное время заморозки</b>"}
 
@@ -100,7 +100,7 @@ class TestMod(loader.Module):
                                                                                                           message))))
             return
         [handler] = logging.getLogger().handlers
-        logs = ("\n".join(handler.dumps(lvl))).encode("utf-8")
+        logs = ("\n".join(handler.dumps(lvl))).encode("utf-16")
         if not len(logs) > 0:
             await utils.answer(message, self.strings("no_logs", message).format(lvl))
             return

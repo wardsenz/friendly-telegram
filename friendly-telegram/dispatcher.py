@@ -93,7 +93,7 @@ class CommandDispatcher:
             return
 
         logging.debug("Incoming command!")
-        if event.sticker:
+        if event.sticker or event.dice:
             logging.debug("Ignoring invisible command (with sticker).")
         if event.via_bot_id:
             logging.debug("Ignoring inline bot.")
@@ -160,12 +160,12 @@ class CommandDispatcher:
                 logging.exception("Command failed")
                 try:
                     if await self.security.check(message, security.OWNER | security.SUDO):
-                        txt = ("<b>Request failed! Request was</b> <code>" + utils.escape_html(message.message)
-                               + "</code><b>. Please report it in the support group "
-                               "(</b><code>{0}support</code><b>) along with the logs "
+                        txt = ("<b>Запрос не выполнен! Запрос был</b> <code>" + utils.escape_html(message.message)
+                               + "</code><b>. Пожалуйста, сообщите об этом в группе поддержки "
+                               "(</b><code>{0}support</code><b>) вместе с логами (обязательно!) "
                                "(</b><code>{0}logs error</code><b>)</b>").format(prefix)
                     else:
-                        txt = "<b>Sorry, something went wrong!</b>"
+                        txt = "<b>Извините, что-то пошло не так!</b>"
                     await (message.edit if message.out else message.reply)(txt)
                 finally:
                     raise e

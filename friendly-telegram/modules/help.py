@@ -34,15 +34,15 @@ class HelpMod(loader.Module):
                "single_cmd": "\n• <code><u>{}</u></code>\n",
                "undoc_cmd": "Для этой команды нет документации",
                "all_header": ("<b>Помощь для</b> <a href='https://t.me/friendlytgbot'>Friendly-Telegram</a> <a href='https://t.me/wardsenz'>Mod</a>\n"
-                              "Для получения дополнительной информации о том, как использовать команду, введите <code>{}help &lt;имя модуля&gt;</code>\n\n"
+                              "Для получения дополнительной информации о том, как использовать модуль, введите <code>{}help &lt;имя модуля&gt;</code>\n\n"
                               "<b>Доступные модули:</b>"),
                "mod_tmpl": "\n• <b>{}</b>",
                "first_cmd_tmpl": ": <code>{}",
                "cmd_tmpl": ", {}",
-               "footer": ("\n\nВы можете <b>узнать</b> о большинстве команд "
+               "footer": ("\n\nДля выгрузки модуля используйте <code>unloadmod 'название модуля'</code>\nВы можете <b>узнать</b> о большинстве команд "
                           "<a href='https://ftg-ru.ga'>тут</a>"),
                "joined": "<b>Присоединился к</b> <a href='https://t.me/wardsenz'>каналу поддержки</a>",
-               "join": "<b>Присоединяйся к</b> <a href='https://t.me/friendlytgbot'>каналу поддержки</a>"}
+               "join": "<b>Присоединяйся к</b> <a href='https://t.me/wardsenz'>каналу поддержки</a>"}
 
     @loader.unrestricted
     async def helpcmd(self, message):
