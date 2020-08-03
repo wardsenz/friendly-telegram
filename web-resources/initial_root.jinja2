@@ -28,7 +28,7 @@
 
 {% block content %}
   <div class="mdl-card__title">
-    <h3 class="mdl-card__title-text">Добро пожаловать в Friendly-Telegram веб интерфейс</h3>
+    <h3 class="mdl-card__title-text">Добро пожаловать в веб интерфейс Friendly-Telegram</h3>
   </div>
   <div class="mdl-card__supporting-text">
     Здесь вы можете настроить различные функции Friendly-Telegram, а также получить доступ к инструментам отладки и отчетам о состоянии
@@ -83,7 +83,7 @@
           <span class="mdl-textfield__error" id="phoneerror">Номер телефона не может быть правильным</span>
         </div>
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="sendCode(document.getElementById('phone'));">
-          Send Code
+          Отправить Код
         </button>
       </form>
     </div>
@@ -92,7 +92,7 @@
   <br>
   <div class="mdl-card mdl-shadow--2dp padded" style="width:100%;">
     <div class="mdl-card__title">
-      <h3 class="mdl-card__title-text">Save Changes</h3>
+      <h3 class="mdl-card__title-text">Сохранить Изменения</h3>
     </div>
     <div class="mdl-card__supporting-text">
       В этом разделе вы можете выбрать, чтобы ввести Heroku API Token из <a href="https://dashboard.heroku.com/account">Heroku dashboard</a>
@@ -112,7 +112,7 @@
         </div>
         <br>
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="finishLogin();">
-          Continue
+          Продолжить
         </button>
         <div id="heroku_progress" style="display: none;">
           <br>
@@ -124,10 +124,10 @@
 
 
   <dialog class="mdl-dialog" id="codeentry">
-    <h4 class="mdl-dialog__title">Enter Code</h4>
+    <h4 class="mdl-dialog__title">Введите Код</h4>
     <div class="mdl-dialog__content">
       <p>
-        ожалуйста, введите код, отправленный на ваш Телеграм аккаунт
+        Пожалуйста, введите код, отправленный на ваш Телеграм аккаунт
       </p>
 
       <div class="mdl-textfield mdl-js-textfield">
@@ -137,7 +137,7 @@
       </div>
     </div>
     <div class="mdl-dialog__actions">
-      <button class="mdl-button" onclick="cancelCodeInput();">Cancel</button>
+      <button class="mdl-button" onclick="cancelCodeInput();">Отмена</button>
     </div>
   </dialog>
 
