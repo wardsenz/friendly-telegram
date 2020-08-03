@@ -38,7 +38,7 @@ function setConfigFailed(elem) {
   'use strict';
   elem.value = elem.dataset.currentvalue;
   document.getElementById("snackbar").MaterialSnackbar.showSnackbar({
-      message: "Setting configuration value failed",
+      message: "Установка конфигуциронного значения провалена",
       timeout: 2000});
 }
 
@@ -50,7 +50,7 @@ function setConfigDone(elem) {
   }
   elem.dataset.currentvalue = elem.value;
   document.getElementById("snackbar").MaterialSnackbar.showSnackbar({
-      message: "Configuration value set",
+      message: "Конфигурационное значение установлено",
       timeout: 2000});
 }
 

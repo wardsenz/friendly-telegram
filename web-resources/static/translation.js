@@ -66,21 +66,21 @@ function loadTranslations(file) {
 function importStringsFailed() {
   'use strict';
   document.getElementById("snackbar").MaterialSnackbar.showSnackbar({
-      message: "Import failed",
+      message: "Импорт провален",
       timeout: 2000});
 }
 
 function importStringsSuccessful() {
   'use strict';
   document.getElementById("snackbar").MaterialSnackbar.showSnackbar({
-      message: "Import successful",
+      message: "Импортировано успешно",
       timeout: 2000});
 }
 
 function exportStringsFailed() {
   'use strict';
   document.getElementById("snackbar").MaterialSnackbar.showSnackbar({
-      message: "Export failed",
+      message: "Экспорт провален",
       timeout: 2000});
 }
 
