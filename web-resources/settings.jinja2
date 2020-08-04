@@ -26,18 +26,18 @@
 {% endblock %}
 
 {% block title %}
-  Friendly-Telegram
+  Friendly-Telegram Mod
 {% endblock %}
 
 {% block content %}
   <div class="mdl-card__title">
-    <h3 class="mdl-card__title-text">Welcome to the Friendly-Telegram web interface</h3>
+    <h3 class="mdl-card__title-text">Добро пожаловать в веб интерфейс Friendly-Telegram Mod</h3>
   </div>
   <div class="mdl-card__supporting-text">
-    Here you can configure various features of Friendly-Telegram, as well as access debugging tools and status reports
+    Здесь вы можете настроить различные функции Friendly-Telegram, а также получить доступ к инструментам отладки и отчетам о состоянии
     <br><br>
-    You are currently managing permissions
-    <p><strong>You must restart after changing any of these settings or they will not take effect</strong></p>
+    Сейчас вы управляете разрешениями
+    <p><strong>Вы должны перезагрузиться после изменения любой из этих настроек, иначе они не вступят в силу</strong></p>
     {% for module in modules %}
       {% set ns.module_number = ns.module_number + 1 %}
       {% if module.commands %}
@@ -52,11 +52,11 @@
   <br>
   <div class="mdl-card mdl-shadow--2dp padded" style="width:100%;">
     <div class="mdl-card__title">
-      <h3 class="mdl-card__title-text">Permissions</h3>
+      <h3 class="mdl-card__title-text">Разрешения</h3>
     </div>
     <div class="mdl-card__supporting-text">
-      <p>You can customise which permission sets are enabled and who is in them below</p>
-      <p><strong>If a switch is disabled here, it is disabled universally for all commands</strong></p>
+      <p>Вы можете настроить, какие разрешения включены и кто в них находится ниже</p>
+      <p><strong>Если переключатель отключен здесь, он отключается универсально для всех команд</strong></p>
       {% include 'permission_setting.jinja2' %}
     </div>
   </div>
@@ -68,38 +68,38 @@
       <h4 class="mdl-card__title-text">Permission Groups</h4>
     </div>
     <div class="mdl-cad__supporting-text" style="width:100%;">
-      <h5 style="font-weight: 300;">Owner</h5>
-      <p>The owner is the highest level of privilege. They can use any command by default (though this can be configured). Enter the IDs below, comma separated, or leave blank to use the currently signed in user.</p>
+      <h5 style="font-weight: 300;">Владелец</h5>
+      <p>Владелец - это высший уровень привилегий. Они могут использовать любую команду по умолчанию (хотя это можно настроить). Введите следующие ID, разделенные запятыми, или оставьте пустым, чтобы использовать текущего пользователя, вошедшего в систему.</p>
       <br>
       <form action="#">
         <div class="mdl-textfield mdl-js-textfield">
           <input class="mdl-textfield__input" type="text" pattern="([0-9]+(,\s*|$))+" id="owner_ids" data-defaultvalue="" data-currentvalue="{{ owner }}" value="{{ owner }}" onchange="setGroup(this, 'owner');">
-          <label class="mdl-textfield__label" for="owner_id">Owner IDs...</label>
-          <span class="mdl-textfield__error">Input is not a number!</span>
+          <label class="mdl-textfield__label" for="owner_id">IDs Владельца...</label>
+          <span class="mdl-textfield__error">Не число!</span>
         </div>
       </form>
 
       <br>
       <h5 style="font-weight: 300;">Sudo</h5>
-      <p>Sudo users are the highest non-owner level of privilege. They can use most commands by default. Enter the IDs below, comma-separated.</p>
+      <p>Sudo - это самый высокий уровень привилегий, не являющийся владельцем. Они могут использовать большинство команд по умолчанию. Введите идентификаторы ниже, разделенные запятыми.</p>
       <br>
       <form action="#">
         <div class="mdl-textfield mdl-js-textfield">
           <input class="mdl-textfield__input" type="text" pattern="([0-9]+(,\s*|$))+" id="sudo_ids" data-defaultvalue="" data-currentvalue="{{ sudo }}" value="{{ sudo }}" onchange="setGroup(this, 'sudo');">
           <label class="mdl-textfield__label" for="sudo_ids">Sudo IDs...</label>
-          <span class="mdl-textfield__error">Input is not a comma-separated list of numbers!</span>
+          <span class="mdl-textfield__error">Не разделенный запятыми список чисел!</span>
         </div>
       </form>
 
       <br>
       <h5 style="font-weight: 300;"></h5>
-      <p>Support users are the lowest special level of privilege. They can only use a few commands by default. Enter the IDs below, comma-separated.</p>
+      <p>Помощник имеют самый низкий специальный уровень привилегий. По умолчанию они могут использовать только несколько команд. Введите идентификаторы ниже, разделенные запятыми.</p>
       <br>
       <form action="#">
         <div class="mdl-textfield mdl-js-textfield">
           <input class="mdl-textfield__input" type="text" pattern="([0-9]+(,\s*|$))+" id="support_ids" data-defaultvalue="" data-currentvalue="{{ sudo }}" value="{{ support }}" onchange="setGroup(this, 'support');">
-          <label class="mdl-textfield__label" for="support_ids">Support IDs...</label>
-          <span class="mdl-textfield__error">Input is not a comma-separated list of numbers!</span>
+          <label class="mdl-textfield__label" for="support_ids">IDs Помощника...</label>
+          <span class="mdl-textfield__error">Не разделенный запятыми список чисел!</span>
         </div>
       </form>
       <br>

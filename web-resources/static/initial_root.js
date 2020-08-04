@@ -38,14 +38,14 @@ function setApi() {
 function setApiFailed(elem) {
   'use strict';
       document.getElementById("snackbar").MaterialSnackbar.showSnackbar({
-      message: "Setting API configuration failed",
+      message: "Установка конфигурации API провалена",
       timeout: 2000});
 }
 
 function setApiDone(elem) {
   'use strict';
   document.getElementById("snackbar").MaterialSnackbar.showSnackbar({
-      message: "API configuration set",
+      message: "Конфигурация API установлена",
       timeout: 2000});
 }
 
@@ -75,7 +75,7 @@ function sendCode(elem) {
 function sendCodeFailed() {
   'use strict';
   document.getElementById("snackbar").MaterialSnackbar.showSnackbar({
-      message: "Sending authentication code failed.",
+      message: "Отправление индентификационнго кода провалено.",
       timeout: 2000});
 }
 
@@ -113,7 +113,7 @@ function codeChanged() {
   const password = document.getElementById("password").value;
   if (newCode.length > 0) {
     errorElem.style = ""; // Set by MDL
-    errorElem.innerText = "Code must be 5 numerical digits";
+    errorElem.innerText = "Код должен состоять из 5 цифр";
   }
   if (newCode.length > 5) {
     elem.value = newCode.substring(0, 5);
@@ -126,7 +126,7 @@ function codeChanged() {
       if (!response.ok) {
         console.log(response);
         if (response.status == 403) {
-          codeError(elem, "Code invalid");
+          codeError(elem, "Неправильный код");
         } else if (response.status == 401) {
           // Code correct, 2FA required
           cancelCodeInput();
@@ -136,7 +136,7 @@ function codeChanged() {
           cancelCodeInput();
           cancelPasswordInput();
         } else {
-          codeError(elem, "Server error");
+          codeError(elem, "Ошибка сервера");
         }
       } else {
         response.text()
@@ -144,17 +144,17 @@ function codeChanged() {
           document.cookie = "secret=" + secret;
           cancelCodeInput();
           cancelPasswordInput();
-          codeError(elem, "Logged In")
+          codeError(elem, "Авторизован")
         })
         .catch(function(error) {
           console.log(error);
-          codeError(elem, "Network error");
+          codeError(elem, "Ошибка сети");
         });
       }
     })
     .catch(function(error) {
       console.log(error);
-      codeError(elem, "Network error");
+      codeError(elem, "Ошибка сети");
     });
   }
 }
@@ -190,6 +190,6 @@ function finishLoginFailed() {
   'use strict';
   document.getElementById("heroku_progress").style.display = "none";
   document.getElementById("snackbar").MaterialSnackbar.showSnackbar({
-    message: "Failed to complete login",
+    message: "Не удалось завершить вход",
     timeout: 2000});
 }
