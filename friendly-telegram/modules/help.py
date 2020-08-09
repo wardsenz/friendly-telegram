@@ -39,10 +39,10 @@ class HelpMod(loader.Module):
                "mod_tmpl": "\n• <b>{}</b>",
                "first_cmd_tmpl": ": <code>{}",
                "cmd_tmpl": ", {}",
-               "footer": ("\n\nДля выгрузки модуля используйте <code>unloadmod 'название модуля'</code>\nВы можете <b>узнать</b> о большинстве команд "
+               "footer": ("\n\nДля выгрузки модуля используйте <code>.unloadmod '<название модуля>'</code>\nВы можете <b>узнать</b> о большинстве команд "
                           "<a href='https://ftg-ru.ga'>тут</a>"),
-               "joined": "<b>Присоединился к</b> <a href='https://t.me/wardsenz'>каналу поддержки</a>",
-               "join": "<b>Присоединяйся к</b> <a href='https://t.me/wardsenz'>каналу поддержки</a>"}
+               "joined": "<b>Присоединился в</b> <a href='https://t.me/friendlytgbot_ru'>чат поддержки</a>",
+               "join": "<b>Присоединяйся в</b> <a href='https://t.me/friendlytgbot_ru'>чат поддержки</a>"}
 
     @loader.unrestricted
     async def helpcmd(self, message):
