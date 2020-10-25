@@ -53,6 +53,7 @@
 
 
 * ### Alpine Linux (iPhone iSh)
+        Upd. 25.10: Если появляется ошибка о том что команда apk не найдена, то установите его [здесь](https://github.com/ish-app/ish/wiki/Installing-apk-on-the-App-Store-Version)
 	1. Обновляем список пакетов и сами пакеты.
 		- $`apk update && apk upgrade`
 		![Обновление](src/apk_update.jpg)
