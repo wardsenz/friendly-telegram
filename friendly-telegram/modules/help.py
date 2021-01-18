@@ -33,7 +33,7 @@ class HelpMod(loader.Module):
                                      "и они могут быть запущены с <code>{}&lt;command&gt;</code>"),
                "single_cmd": "\n• <code><u>{}</u></code>\n",
                "undoc_cmd": "Для этой команды нет документации",
-               "all_header": ("<b>Помощь для</b> <a href='https://t.me/friendlytgbot'>Friendly-Telegram</a> <a href='https://t.me/wardsenz'>Mod</a>\n"
+               "all_header": ("<b>Помощь для</b> <a href='https://t.me/friendlytgbot'>Friendly-Telegram</a> <a href='https://t.me/friendly_telegram'>Mod</a>\n"
                               "Для получения дополнительной информации о том, как использовать модуль, введите <code>{}help &lt;имя модуля&gt;</code>\n\n"
                               "<b>Доступные модули:</b>"),
                "mod_tmpl": "\n• <b>{}</b>",
@@ -104,7 +104,7 @@ class HelpMod(loader.Module):
     async def supportcmd(self, message):
         """Присоединяется в чат поддержки"""
         if not self.is_bot and await self.allmodules.check_security(message, security.OWNER | security.SUDO):
-            await self.client(JoinChannelRequest("https://t.me/wardsenz"))
+            await self.client(JoinChannelRequest("https://t.me/friendly_telegram"))
             await utils.answer(message, self.strings("joined", message))
         else:
             await utils.answer(message, self.strings("join", message))
