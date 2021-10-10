@@ -216,22 +216,33 @@ class SecurityManager:
         if f_group_member and message.is_group:
             return True
 
-        if f_group_admin_any or f_group_owner:
-            if message.is_channel:
-                if not message.is_group:
-                    if message.edit_date:
-                        return False  # anyone can assume identity of another in channels
-                        # TODO: iter admin log and search for the edit event, to check who edited
-                    chat = await message.get_chat()
-                    if not chat.creator and not (chat.admin_rights and chat.admin_rights.post_messages):
-                        return False
-                    if self._any_admin and f_group_admin_any:
-                        return True
+        if message.is_channel:
+            if not message.is_group:
+                if message.edit_date:
+                    return False  # anyone can assume identity of another in channels
+                    # TODO: iter admin log and search for the edit event, to check who edited
+                chat = await message.get_chat()
+                if not chat.creator and not (chat.admin_rights and chat.admin_rights.post_messages):
+                    return False
+                if self._any_admin and f_group_admin_any:
+                    return True
 
-                    if f_group_admin:
+                if f_group_admin:
+                    return True
+
+                if message.out:
+                    if chat.creator and f_group_owner:
                         return True
-                    # TODO: when running as bot, send an inline button which allows confirmation of command
-                else:
+                    me_id = (await message.client.get_me(True)).user_id
+                    if f_owner and me_id in self._owner:
+                        return True
+                    if f_sudo and me_id in self._sudo:
+                        return True
+                    if f_support and me_id in self._support:
+                        return True
+                # TODO: when running as bot, send an inline button which allows confirmation of command
+            else:
+                if f_group_admin_any or f_group_owner:
                     participant = await message.client(GetParticipantRequest(await message.get_input_chat(),
                                                                              await message.get_input_sender()))
                     participant = participant.participant
@@ -256,7 +267,8 @@ class SecurityManager:
                             return True
                         if f_group_admin_invite_users and rights.invite_users:
                             return True
-            elif message.is_group:
+        elif message.is_group:
+            if f_group_admin_any or f_group_owner:
                 full_chat = await message.client(telethon.functions.messages.GetFullChatRequest(message.chat_id))
                 participants = full_chat.full_chat.participants.participants
                 participant = None
