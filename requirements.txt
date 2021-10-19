@@ -1,5 +1,5 @@
 # Telegram connection
-telethon >= 1.17.0
+git+https://github.com/LonamiWebs/Telethon@2e1be01ad4f6462de2e9e1f96a33537e51f44980#egg=Telethon
 
 # Config
 pythondialog ~= 3.5.1
