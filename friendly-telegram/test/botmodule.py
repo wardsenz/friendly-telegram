@@ -49,7 +49,7 @@ class BotTestMod(loader.Module):
                     spinner.step(progress=i)
                     i += 1
                     try:
-                        await func.test(message.input_chat, self._db, self._client, name)
+                        await func.test(await message.get_input_chat(), self._db, self._client, name)
                     except Exception:
                         logging.exception("Test failed: %r (in stage %d)", name, stage)
                     await asyncio.sleep(2)
