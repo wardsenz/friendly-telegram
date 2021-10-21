@@ -2,17 +2,17 @@
 git+https://github.com/LonamiWebs/Telethon@2e1be01ad4f6462de2e9e1f96a33537e51f44980#egg=Telethon
 
 # Config
-pythondialog ~= 3.5.1
+pythondialog ~= 3.5.2
 
 # Heroku & Updater
-heroku3 ~= 4.2.1
-gitpython ~= 3.1.9
+heroku3 ~= 4.2.3
+gitpython ~= 3.1.24
 
 # Translations
-babel ~= 2.8.0
+babel ~= 2.9.1, >= 2.9.1
 
 # Eval
 meval >= 2.4, ~= 2.4
 
 # Web
-aiohttp_jinja2 ~= 1.2.0 
+aiohttp_jinja2 ~= 1.5, >= 1.2.0
