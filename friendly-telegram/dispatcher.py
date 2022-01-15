@@ -99,6 +99,9 @@ class CommandDispatcher:
         if event.via_bot_id:
             logging.debug("Ignoring inline bot.")
             return
+        if hasattr(event, "reactions"):
+            logging.debug("Ignoring reaction.")
+            return
 
         message = utils.censor(event.message)
         blacklist_chats = self._db.get(main.__name__, "blacklist_chats", [])
