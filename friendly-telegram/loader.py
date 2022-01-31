@@ -132,6 +132,10 @@ class Module():
     async def _client_ready2(self, client, db):
         pass
 
+    async def on_unload(self):
+        """Will be called after module is unloaded"""
+        pass
+
 
 def get_commands(mod):
     """Introspect the module to get its commands"""
@@ -225,6 +229,7 @@ class Modules():
         for module in self.modules:
             if module.__class__.__name__ == instance.__class__.__name__:
                 logging.debug("Removing module for update %r", module)
+                asyncio.ensure_future(module.on_unload())
                 self.modules.remove(module)
         self.modules += [instance]
 
@@ -309,6 +314,7 @@ class Modules():
             if classname in (module.name, module.__class__.__name__):
                 worked += [module.__module__]
                 logging.debug("Removing module for unload %r", module)
+                asyncio.ensure_future(module.on_unload())  # call module unload callback
                 self.modules.remove(module)
                 to_remove += module.commands.values()
                 if hasattr(module, "watcher"):
