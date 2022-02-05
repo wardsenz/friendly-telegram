@@ -99,7 +99,7 @@ class CommandDispatcher:
         if event.via_bot_id:
             logging.debug("Ignoring inline bot.")
             return
-        if hasattr(event, "reactions"):
+        if getattr(event, "reactions", None):
             logging.debug("Ignoring reaction.")
             return
 
