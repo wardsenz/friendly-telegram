@@ -19,10 +19,11 @@ try:
     import coloredlogs  # Optional support for https://pypi.org/project/coloredlogs
     import coloredlogs.converter  # To switch between ANSI and HTML colors
 except ModuleNotFoundError:
+    import html
     _formatter = logging.Formatter
 
     def _converter(s):
-        return s
+        return "<code>" + html.escape(s) + "</code>"
 else:
     _formatter = coloredlogs.ColoredFormatter
     _converter = coloredlogs.converter.convert
@@ -57,14 +58,12 @@ class MemoryHandler(logging.Handler):
         finally:
             self.release()
 
-    def dumps(self, lvl=0, convert=True):
+    def dumps(self, lvl=0):
         """Return all entries of minimum level as list of strings"""
-        return [self.format_record(record, convert) for record in (self.dump()) if record.levelno >= lvl]
+        return [self.format_record(record) for record in (self.dump()) if record.levelno >= lvl]
 
-    def format_record(self, record, convert=True):
-        if convert:
-            return _converter(self.target.format(record))
-        return self.target.format(record)
+    def format_record(self, record):
+        return _converter(self.target.format(record))
 
     def emit(self, record):
         self.acquire()

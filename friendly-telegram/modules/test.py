@@ -51,7 +51,7 @@ class TestMod(loader.Module):
                "set_loglevel": "<b>Please specify verbosity as an integer or string</b>",
                "uploading_logs": "<b>Uploading logs...</b>",
                "no_logs": "<b>You don't have any logs at verbosity {}.</b>",
-               "logs_filename": "ftg-logs.txt",
+               "logs_filename": "ftg-logs.html",
                "logs_caption": "friendly-telegram logs with verbosity {}",
                "logs_unsafe": ("<b>Warning: running this command may reveal personal or dangerous information. "
                                "You can write</b> <code>{}</code> <b>at the end to accept the risks</b>"),
@@ -93,14 +93,59 @@ class TestMod(loader.Module):
                                self.strings("logs_unsafe", message).format(utils.escape_html(self.strings("logs_force",
                                                                                                           message))))
             return
-        handler = log.getMemoryHandler()
-        logs = ("\n".join(handler.dumps(lvl))).encode("utf-8")
-        if not len(logs) > 0:
+        entries = log.getMemoryHandler().dumps(level)
+        if not entries:
             await utils.answer(message, self.strings("no_logs", message).format(lvl))
             return
-        logs = BytesIO(logs)
-        logs.name = self.strings("logs_filename", message)
-        await utils.answer(message, logs, caption=self.strings("logs_caption", message).format(lvl))
+        logs = (
+            "<!DOCTYPE html>"
+            "<html>"
+              "<head>"
+                "<style>"
+                  # adapted from https://stackoverflow.com/a/41309213/5509575, CC BY-SA by Rounin
+                  + (
+                  "pre {"
+                    "white-space: pre-wrap;"
+                  "}"
+
+                  "pre::before {"
+                    "counter-reset: listing;"
+                  "}"
+
+                  "code {"
+                    "counter-increment: listing;"
+                    "text-align: left;"
+                    "float: left;"
+                    "clear: left;"
+                    "margin-left: 4em;"
+                    "margin-bottom: 1em;"
+                  "}"
+
+                  "code::before {"
+                    "content: counter(listing) \". \";"
+                    "display: block;"
+                    "float: left;"
+                    "text-align: right;"
+                    "width: 4em;"
+                    "margin-left: -4em;"
+                  "}"
+
+                  "code > br {"
+                    "display: none;"
+                  "}"
+                  ).replace(": ", ":").replace(" {", "{") +
+                "</style>"
+              "</head>"
+              "<body>"
+                "<pre class=\"code\">\n"
+                  + "<br>".join(entries) +
+                "\n</pre>"
+              "</body>"
+            "</html>"
+            ).encode("utf-8")
+        file = io.BytesIO(logs)
+        file.name = self.strings("logs_filename", message)
+        await utils.answer(message, file, caption=self.strings("logs_caption", message).format(lvl))
 
     @loader.owner
     async def suspendcmd(self, message):
