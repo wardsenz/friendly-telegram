@@ -24,8 +24,8 @@ else:
 
 
 class MemoryHandler(logging.Handler):
-    """Keeps 2 buffers. One for dispatched messages. One for unused messages. When the length of the 2 together is 100
-       truncate to make them 100 together, first trimming handled then unused."""
+    """Keeps 2 buffers. One for dispatched messages. One for unused messages. When the length of the 2 together is capacity
+       truncate to make them capacity together, first trimming handled then unused."""
     def __init__(self, target, capacity):
         super().__init__(0)
         self.target = target
@@ -35,39 +35,58 @@ class MemoryHandler(logging.Handler):
         self.lvl = logging.WARNING  # Default loglevel
 
     def setLevel(self, level):
+        self.acquire()
         self.lvl = level
+        self.release()
+
+    def setCapacity(self, capacity):
+        self.acquire()
+        self.capacity = capacity
+        self.release()
 
     def dump(self):
         """Return a list of logging entries"""
-        return self.handledbuffer + self.buffer
+        self.acquire()
+        try:
+            return self.handledbuffer + self.buffer
+        finally:
+            self.release()
 
     def dumps(self, lvl=0):
         """Return all entries of minimum level as list of strings"""
-        return [self.target.format(record) for record in (self.buffer + self.handledbuffer) if record.levelno >= lvl]
+        self.acquire()
+        try:
+            return [self.target.format(record) for record in (self.handledbuffer + self.buffer) if record.levelno >= lvl]
+        finally:
+            self.release()
 
     def emit(self, record):
-        if len(self.buffer) + len(self.handledbuffer) >= self.capacity:
-            if self.handledbuffer:
-                del self.handledbuffer[0]
-            else:
-                del self.buffer[0]
-        self.buffer.append(record)
-        if record.levelno >= self.lvl and self.lvl >= 0:
-            self.acquire()
-            try:
+        self.acquire()
+        try:
+            if len(self.buffer) + len(self.handledbuffer) >= self.capacity:
+                if self.handledbuffer:
+                    del self.handledbuffer[0]
+                else:
+                    del self.buffer[0]
+            self.buffer.append(record)
+            if record.levelno >= self.lvl and self.lvl >= 0:
                 for precord in self.buffer:
                     self.target.handle(precord)
                 self.handledbuffer = self.handledbuffer[-(self.capacity - len(self.buffer)):] + self.buffer
                 self.buffer = []
-            finally:
-                self.release()
+        finally:
+            self.release()
 
 
-def init():
+def init(capacity=500):
     formatter = _formatter(logging.BASIC_FORMAT, "")
     handler = logging.StreamHandler()
     handler.setFormatter(formatter)
-    logging.getLogger().handlers = []
-    logging.getLogger().addHandler(MemoryHandler(handler, 500))
+    memory_handler = MemoryHandler(handler, capacity)
+    logging.getLogger().addHandler(memory_handler)
     logging.getLogger().setLevel(0)
     logging.captureWarnings(True)
+    return memory_handler
+
+def getMemoryHandler():
+    return next(filter(lambda h: isinstance(h, MemoryHandler), logging.getLogger().handlers), None)
