@@ -93,7 +93,7 @@ class TestMod(loader.Module):
                                self.strings("logs_unsafe", message).format(utils.escape_html(self.strings("logs_force",
                                                                                                           message))))
             return
-        entries = log.getMemoryHandler().dumps(level)
+        entries = log.getMemoryHandler().dumps(lvl)
         if not entries:
             await utils.answer(message, self.strings("no_logs", message).format(lvl))
             return
@@ -142,8 +142,8 @@ class TestMod(loader.Module):
                 "\n</pre>"
               "</body>"
             "</html>"
-            ).encode("utf-8")
-        file = io.BytesIO(logs)
+        ).encode("utf-8")
+        file = BytesIO(logs)
         file.name = self.strings("logs_filename", message)
         await utils.answer(message, file, caption=self.strings("logs_caption", message).format(lvl))
 
