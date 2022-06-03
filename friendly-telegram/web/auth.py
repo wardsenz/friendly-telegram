@@ -64,7 +64,7 @@ class Web:
                 await self.client_data[uid][1].send_message(owner, msg)
             except Exception:
                 logging.warning("Failed to send code to owner", exc_info=True)
-        print(humanfriendly.terminal.html.html_to_ansi(msg) if humanfriendly else html.parse(msg)[0])  # noqa: T001
+        print(humanfriendly.terminal.html.html_to_ansi(msg) if humanfriendly else html.parse(msg)[0])  # noqa: T201
         self._uid_to_code[uid] = (b64encode(hashlib.scrypt((str(code).zfill(5) + str(uid)).encode("utf-8"),
                                                            salt=salt, n=16384, r=8, p=1, dklen=64)).decode("utf-8"),
                                   salt)

@@ -20,7 +20,9 @@ try:
     import coloredlogs.converter  # To switch between ANSI and HTML colors
 except ModuleNotFoundError:
     _formatter = logging.Formatter
-    _converter = lambda s: s
+
+    def _converter(s):
+        return s
 else:
     _formatter = coloredlogs.ColoredFormatter
     _converter = coloredlogs.converter.convert
