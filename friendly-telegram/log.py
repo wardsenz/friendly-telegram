@@ -54,11 +54,7 @@ class MemoryHandler(logging.Handler):
 
     def dumps(self, lvl=0):
         """Return all entries of minimum level as list of strings"""
-        self.acquire()
-        try:
-            return [self.target.format(record) for record in (self.handledbuffer + self.buffer) if record.levelno >= lvl]
-        finally:
-            self.release()
+        return [self.target.format(record) for record in (self.dump()) if record.levelno >= lvl]
 
     def emit(self, record):
         self.acquire()
@@ -87,6 +83,7 @@ def init(capacity=500):
     logging.getLogger().setLevel(0)
     logging.captureWarnings(True)
     return memory_handler
+
 
 def getMemoryHandler():
     return next(filter(lambda h: isinstance(h, MemoryHandler), logging.getLogger().handlers), None)
