@@ -19,7 +19,7 @@ import time
 
 from io import BytesIO
 
-from .. import loader, utils
+from .. import loader, utils, log
 
 logger = logging.getLogger(__name__)
 
@@ -93,8 +93,8 @@ class TestMod(loader.Module):
                                self.strings("logs_unsafe", message).format(utils.escape_html(self.strings("logs_force",
                                                                                                           message))))
             return
-        [handler] = logging.getLogger().handlers
-        logs = ("\n".join(handler.dumps(lvl))).encode("utf-16")
+        handler = log.getMemoryHandler()
+        logs = ("\n".join(handler.dumps(lvl))).encode("utf-8")
         if not len(logs) > 0:
             await utils.answer(message, self.strings("no_logs", message).format(lvl))
             return

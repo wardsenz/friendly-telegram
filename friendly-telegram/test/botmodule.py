@@ -52,6 +52,8 @@ class BotTestMod(loader.Module):
                         await func.test(await message.get_input_chat(), self._db, self._client, name)
                     except Exception:
                         logging.exception("Test failed: %r (in stage %d)", name, stage)
+                        core.TestManager.failed += 1
+                    core.TestManager.tests += 1
                     await asyncio.sleep(2)
         core.TestManager.restart.set_result(None)
         if stage == 5:
@@ -59,4 +61,6 @@ class BotTestMod(loader.Module):
                 # W606 is a false positive
                 await [c for c in self.allclients if c is not self._client][0](DeleteAccountRequest(""))  # noqa: W606
             except asyncio.CancelledError:
-                exit()
+                pass
+            if core.TestManager.failed:
+                exit(1)
