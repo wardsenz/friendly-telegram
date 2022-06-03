@@ -39,7 +39,7 @@ from telethon.tl.types import BotCommand, BotCommandScopeDefault
 from telethon.network.connection import ConnectionTcpMTProxyRandomizedIntermediate
 from telethon.network.connection import ConnectionTcpFull
 
-from . import utils, loader, heroku, security
+from . import utils, loader, heroku, security, log
 from .dispatcher import CommandDispatcher
 
 
@@ -379,7 +379,7 @@ async def amain(first, client, allclients, web, arguments):
     is_bot = await client.is_bot()
     if is_bot:
         local = True
-    [handler] = logging.getLogger().handlers
+    handler = log.getMemoryHandler()
     db = local_backend.LocalBackend(client, arguments.data_root) if local else backend.CloudBackend(client)
     if setup:
         await db.init(lambda e: None)
@@ -396,7 +396,7 @@ async def amain(first, client, allclients, web, arguments):
         await fdb.init()
         modules.send_config(fdb, babelfish)
         await modules.send_ready(client, fdb, allclients)  # Allow normal init even in setup
-        handler.setLevel(50)
+        handler.setLevel(logging.WARNING)
         pdb = run_config(pdb, arguments.data_root, getattr(client, "phone", "Unknown Number"), modules)
         if pdb is None:
             await client(DeleteChannelRequest(db.db))
