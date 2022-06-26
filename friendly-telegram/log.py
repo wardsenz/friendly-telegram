@@ -15,6 +15,8 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+import collections
+import itertools
 try:
     import coloredlogs  # Optional support for https://pypi.org/project/coloredlogs
     import coloredlogs.converter  # To switch between ANSI and HTML colors
@@ -32,53 +34,69 @@ else:
 class MemoryHandler(logging.Handler):
     """Keeps 2 buffers. One for dispatched messages. One for unused messages. When the length of the 2 together is capacity
        truncate to make them capacity together, first trimming handled then unused."""
-    def __init__(self, target, capacity):
+    def __init__(self, target, capacity, error_capacity=None):
         super().__init__(0)
         self.target = target
+        self.buffer = collections.deque()
+        self.handledbuffer = collections.deque()
+        self.errorbuffer = collections.deque()
         self.capacity = capacity
-        self.buffer = []
-        self.handledbuffer = []
+        self._buffer_capacity = capacity - (error_capacity or 0)
+        self._error_capacity = error_capacity
         self.lvl = logging.WARNING  # Default loglevel
+
+    def _isError(self, record):
+        return record.levelno >= self.lvl and self.lvl >= 0
 
     def setLevel(self, level):
         self.acquire()
         self.lvl = level
         self.release()
 
-    def setCapacity(self, capacity):
+    def setCapacity(self, capacity, error_capacity=None):
         self.acquire()
         self.capacity = capacity
+        self._error_capacity = error_capacity
+        self._buffer_capacity = buffer_capacity = capacity - (error_capacity or 0)
+        while len(self.buffer) + len(self.handledbuffer) > buffer_capacity:
+            popped = (self.handledbuffer or self.buffer).popleft()
+            if self._isError(popped):
+                self.errorbuffer.append(popped)
+        if error_capacity is not None:
+            while len(self.errorbuffer) > error_capacity:
+                self.errorbuffer.popleft()
         self.release()
 
     def dump(self):
         """Return a list of logging entries"""
         self.acquire()
         try:
-            return self.handledbuffer + self.buffer
+            return list(itertools.chain(self.errorbuffer, self.handledbuffer, self.buffer))
         finally:
             self.release()
 
     def dumps(self, lvl=0):
         """Return all entries of minimum level as list of strings"""
-        return [self.format_record(record) for record in (self.dump()) if record.levelno >= lvl]
+        return [self.formatRecord(record) for record in (self.dump()) if record.levelno >= lvl]
 
-    def format_record(self, record):
+    def formatRecord(self, record):
         return _converter(self.target.format(record))
 
     def emit(self, record):
         self.acquire()
         try:
-            if len(self.buffer) + len(self.handledbuffer) >= self.capacity:
-                if self.handledbuffer:
-                    del self.handledbuffer[0]
-                else:
-                    del self.buffer[0]
+            if len(self.buffer) + len(self.handledbuffer) >= self._buffer_capacity:
+                popped = (self.handledbuffer or self.buffer).popleft()
+                if self._isError(popped):
+                    self.errorbuffer.append(popped)
+                    if self._error_capacity and len(self.errorbuffer) > self._error_capacity:
+                        self.errorbuffer.popleft()
             self.buffer.append(record)
-            if record.levelno >= self.lvl and self.lvl >= 0:
-                for precord in self.buffer:
-                    self.target.handle(precord)
-                self.handledbuffer = self.handledbuffer[-(self.capacity - len(self.buffer)):] + self.buffer
-                self.buffer = []
+            if self._isError(record):
+                for popped in self.buffer:
+                    self.target.handle(popped)
+                self.handledbuffer.extend(self.buffer)
+                self.buffer.clear()
         finally:
             self.release()
 
