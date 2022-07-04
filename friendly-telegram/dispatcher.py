@@ -53,17 +53,17 @@ class CommandDispatcher:
         func = getattr(func, "__func__", func)
         ret = True
         chat = self._ratelimit_storage_chat[message.chat_id]
-        if message.from_id:
-            user = self._ratelimit_storage_user[message.from_id]
+        if message.sender_id:
+            user = self._ratelimit_storage_user[message.sender_id]
             severity = (5 if getattr(func, "ratelimit", False) else 2) * ((user + chat) // 30 + 1)
             user += severity
-            self._ratelimit_storage_user[message.from_id] = user
+            self._ratelimit_storage_user[message.sender_id] = user
             if user > self._ratelimit_max_user:
                 ret = False
             else:
                 self._ratelimit_storage_chat[message.chat_id] = chat
             _decrement_ratelimit(self._ratelimit_max_user * severity, self._ratelimit_storage_user,
-                                 message.from_id, severity)
+                                 message.sender_id, severity)
         else:
             severity = (5 if getattr(func, "ratelimit", False) else 2) * (chat // 15 + 1)
         chat += severity
@@ -93,10 +93,14 @@ class CommandDispatcher:
             return
 
         logging.debug("Incoming command!")
-        if event.sticker or event.dice:
-            logging.debug("Ignoring invisible command (with sticker).")
+        if event.sticker or event.dice or event.audio:
+            logging.debug("Ignoring invisible or potentially forwarded command.")
+            return
         if event.via_bot_id:
             logging.debug("Ignoring inline bot.")
+            return
+        if getattr(event, "reactions", None):
+            logging.debug("Ignoring reaction.")
             return
 
         message = utils.censor(event.message)

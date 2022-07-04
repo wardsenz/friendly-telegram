@@ -20,7 +20,7 @@ from datetime import datetime
 import asyncio
 from io import BytesIO
 
-from .. import loader, utils
+from .. import loader, utils, log
 
 logger = logging.getLogger(__name__)
 
@@ -51,8 +51,8 @@ class TestMod(loader.Module):
                                 "документации</a><b>.</b>"),
                "set_loglevel": "<b>Пожалуйста, укажите уровень в виде целого числа или строки</b>",
                "uploading_logs": "<b>Загрузка логов...</b>",
-               "no_logs": "<b>У вас нет логов на уровне {}.</b>",
-               "logs_filename": "ftg-logs.txt",
+               "no_logs": "<b>У вас нет логов уровня {}.</b>",
+               "logs_filename": "ftg-logs.html",
                "logs_caption": "Friendly-telegram логи с уровнем {}",
                "logs_unsafe": ("<b>ПРЕДУПРЕЖДЕНИЕ: Выполнение этой команды может раскрыть личную или опасную информацию! "
                                "Вы можете написать</b> <code>{}</code> <b>в конце, если понимаете, что делаете!</b>"),
@@ -99,14 +99,59 @@ class TestMod(loader.Module):
                                self.strings("logs_unsafe", message).format(utils.escape_html(self.strings("logs_force",
                                                                                                           message))))
             return
-        [handler] = logging.getLogger().handlers
-        logs = ("\n".join(handler.dumps(lvl))).encode("utf-16")
-        if not len(logs) > 0:
+        entries = log.getMemoryHandler().dumps(lvl)
+        if not entries:
             await utils.answer(message, self.strings("no_logs", message).format(lvl))
             return
-        logs = BytesIO(logs)
-        logs.name = self.strings("logs_filename", message)
-        await utils.answer(message, logs, caption=self.strings("logs_caption", message).format(lvl))
+        logs = (
+            "<!DOCTYPE html>"
+            "<html>"
+              "<head>"
+                "<style>"
+                  # adapted from https://stackoverflow.com/a/41309213/5509575, CC BY-SA by Rounin
+                  + (
+                  "pre {"
+                    "white-space: pre-wrap;"
+                  "}"
+
+                  "pre::before {"
+                    "counter-reset: listing;"
+                  "}"
+
+                  "code {"
+                    "counter-increment: listing;"
+                    "text-align: left;"
+                    "float: left;"
+                    "clear: left;"
+                    "margin-left: 4em;"
+                    "margin-bottom: 1em;"
+                  "}"
+
+                  "code::before {"
+                    "content: counter(listing) \". \";"
+                    "display: block;"
+                    "float: left;"
+                    "text-align: right;"
+                    "width: 4em;"
+                    "margin-left: -4em;"
+                  "}"
+
+                  "code > br {"
+                    "display: none;"
+                  "}"
+                  ).replace(": ", ":").replace(" {", "{") +
+                "</style>"
+              "</head>"
+              "<body>"
+                "<pre class=\"code\">\n"
+                  + "<br>".join(entries) +
+                "\n</pre>"
+              "</body>"
+            "</html>"
+        ).encode("utf-8")
+        file = BytesIO(logs)
+        file.name = self.strings("logs_filename", message)
+        await utils.answer(message, file, caption=self.strings("logs_caption", message).format(lvl))
 
     @loader.owner
     async def suspendcmd(self, message):

@@ -35,11 +35,11 @@ from telethon.errors.rpcerrorlist import PhoneNumberInvalidError, MessageNotModi
 from telethon.tl.functions.channels import DeleteChannelRequest
 from telethon.tl.functions.updates import GetStateRequest
 from telethon.tl.functions.bots import SetBotCommandsRequest
-from telethon.tl.types import BotCommand
+from telethon.tl.types import BotCommand, BotCommandScopeDefault
 from telethon.network.connection import ConnectionTcpMTProxyRandomizedIntermediate
 from telethon.network.connection import ConnectionTcpFull
 
-from . import utils, loader, heroku, security
+from . import utils, loader, heroku, security, log
 from .dispatcher import CommandDispatcher
 
 
@@ -183,7 +183,7 @@ async def set_commands(sec, modules):
     commands = [BotCommand(name, ("/help " + getattr(getattr(func, "__self__", None), "name", "")))
                 for name, func in modules.commands.items()
                 if sec.get_flags(func) & security.PUBLIC_PERMISSIONS]
-    await modules.client(SetBotCommandsRequest(commands))
+    await modules.client(SetBotCommandsRequest(BotCommandScopeDefault(), "en", commands))
 
 
 def main():  # noqa: C901
@@ -210,9 +210,9 @@ def main():  # noqa: C901
             return
         if web:
             loop.run_until_complete(web.start())
-            print("Web mode ready for configuration")  # noqa: T001
+            print("Web mode ready for configuration")  # noqa: T201
             if not arguments.heroku_web_internal:
-                print("Please visit http://localhost:" + str(web.port))  # noqa: T001
+                print("Please visit http://localhost:" + str(web.port))  # noqa: T201
             loop.run_until_complete(web.wait_for_api_token_setup())
             api_token = web.api_token
         else:
@@ -260,9 +260,9 @@ def main():  # noqa: C901
         if web:
             if not web.running.is_set():
                 loop.run_until_complete(web.start())
-                print("Web mode ready for configuration")  # noqa: T001
+                print("Web mode ready for configuration")  # noqa: T201
                 if not arguments.heroku_web_internal:
-                    print("Please visit http://localhost:" + str(web.port))  # noqa: T001
+                    print("Please visit http://localhost:" + str(web.port))  # noqa: T201
             loop.run_until_complete(web.wait_for_clients_setup())
             arguments.heroku = web.heroku_api_token
             clients = web.clients
@@ -282,25 +282,25 @@ def main():  # noqa: C901
                 phone = input("Please enter your phone or bot token: ")
                 phones = {phone.split(":", maxsplit=1)[0]: phone}
             except EOFError:
-                print()  # noqa: T001
-                print("=" * 30)  # noqa: T001
-                print()  # noqa: T001
-                print("Hello. If you are seeing this, it means YOU ARE DOING SOMETHING WRONG!")  # noqa: T001
-                print()  # noqa: T001
-                print("It is likely that you tried to deploy to heroku - "  # noqa: T001
+                print()  # noqa: T201
+                print("=" * 30)  # noqa: T201
+                print()  # noqa: T201
+                print("Hello. If you are seeing this, it means YOU ARE DOING SOMETHING WRONG!")  # noqa: T201
+                print()  # noqa: T201
+                print("It is likely that you tried to deploy to heroku - "  # noqa: T201
                       "you cannot do this via the web interface.")
-                print("To deploy to heroku, go to "  # noqa: T001
+                print("To deploy to heroku, go to "  # noqa: T201
                       "https://friendly-telegram.gitlab.io/heroku to learn more")
-                print()  # noqa: T001
-                print("In addition, you seem to have forked the friendly-telegram repo. THIS IS WRONG!")  # noqa: T001
-                print("You should remove the forked repo, and read https://friendly-telegram.gitlab.io")  # noqa: T001
-                print()  # noqa: T001
-                print("If you're not using Heroku, then you are using a non-interactive prompt but "  # noqa: T001
+                print()  # noqa: T201
+                print("In addition, you seem to have forked the friendly-telegram repo. THIS IS WRONG!")  # noqa: T201
+                print("You should remove the forked repo, and read https://friendly-telegram.gitlab.io")  # noqa: T201
+                print()  # noqa: T201
+                print("If you're not using Heroku, then you are using a non-interactive prompt but "  # noqa: T201
                       "you have not got a session configured, meaning authentication to Telegram is "
-                      "impossible.")  # noqa: T001
-                print()  # noqa: T001
-                print("THIS ERROR IS YOUR FAULT. DO NOT REPORT IT AS A BUG!")  # noqa: T001
-                print("Goodbye.")  # noqa: T001
+                      "impossible.")  # noqa: T201
+                print()  # noqa: T201
+                print("THIS ERROR IS YOUR FAULT. DO NOT REPORT IT AS A BUG!")  # noqa: T201
+                print("Goodbye.")  # noqa: T201
                 sys.exit(1)
     for phone_id, phone in phones.items():
         if arguments.heroku:
@@ -325,7 +325,7 @@ def main():  # noqa: C901
                 client.phone = phone
             clients.append(client)
         except sqlite3.OperationalError as ex:
-            print("Error initialising phone " + (phone if phone else "unknown") + " " + ",".join(ex.args)  # noqa: T001
+            print("Error initialising phone " + (phone if phone else "unknown") + " " + ",".join(ex.args)  # noqa: T201
                   + ": this is probably your fault. Try checking that this is the only instance running and "
                   "that the session is not copied. If that doesn't help, delete the file named '"
                   "friendly-telegram" + (("-" + phone) if phone else "") + ".session'")
@@ -335,7 +335,7 @@ def main():  # noqa: C901
             run_config({}, arguments.data_root)
             return
         except PhoneNumberInvalidError:
-            print("Please check the phone number. Use international format (+XX...)"  # noqa: T001
+            print("Please check the phone number. Use international format (+XX...)"  # noqa: T201
                   " and don't put spaces in it.")
             continue
     del phones
@@ -346,7 +346,7 @@ def main():  # noqa: C901
         else:
             key = input("Please enter your Heroku API key (from https://dashboard.heroku.com/account): ").strip()
         app = heroku.publish(clients, key, api_token)
-        print("Installed to heroku successfully! Type .help in Telegram for help.")  # noqa: T001
+        print("Installed to heroku successfully! Type .help in Telegram for help.")  # noqa: T201
         if web:
             web.redirect_url = app.web_url
             web.ready.set()
@@ -379,7 +379,7 @@ async def amain(first, client, allclients, web, arguments):
     is_bot = await client.is_bot()
     if is_bot:
         local = True
-    [handler] = logging.getLogger().handlers
+    handler = log.getMemoryHandler()
     db = local_backend.LocalBackend(client, arguments.data_root) if local else backend.CloudBackend(client)
     if setup:
         await db.init(lambda e: None)
@@ -396,7 +396,7 @@ async def amain(first, client, allclients, web, arguments):
         await fdb.init()
         modules.send_config(fdb, babelfish)
         await modules.send_ready(client, fdb, allclients)  # Allow normal init even in setup
-        handler.setLevel(50)
+        handler.setLevel(logging.WARNING)
         pdb = run_config(pdb, arguments.data_root, getattr(client, "phone", "Unknown Number"), modules)
         if pdb is None:
             await client(DeleteChannelRequest(db.db))
@@ -458,7 +458,7 @@ async def amain(first, client, allclients, web, arguments):
     if first:
         if __debug__ and arguments.self_test:
             await client(GetStateRequest())  # Start receiving updates
-        print("Started for " + str((await client.get_me(True)).user_id))  # noqa: T001
+        print("Started for " + str((await client.get_me(True)).user_id))  # noqa: T201
     if __debug__ and arguments.self_test:
         await asyncio.wait([client.disconnected, tester.restart], return_when=asyncio.FIRST_COMPLETED)
     else:

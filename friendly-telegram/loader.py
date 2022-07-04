@@ -132,6 +132,10 @@ class Module():
     async def _client_ready2(self, client, db):
         pass
 
+    async def on_unload(self):
+        """Will be called after module is unloaded"""
+        pass
+
 
 def get_commands(mod):
     """Introspect the module to get its commands"""
@@ -225,6 +229,7 @@ class Modules():
         for module in self.modules:
             if module.__class__.__name__ == instance.__class__.__name__:
                 logging.debug("Removing module for update %r", module)
+                asyncio.ensure_future(module.on_unload())
                 self.modules.remove(module)
         self.modules += [instance]
 
@@ -273,16 +278,15 @@ class Modules():
         self.client = client
         await self._compat_layer.client_ready(client)
         try:
-            await asyncio.gather(*[self.send_ready_one(mod, client, db, allclients, True) for mod in self.modules])
+            await asyncio.gather(*[self.send_ready_one(mod, client, db, allclients) for mod in self.modules])
             await asyncio.gather(*[mod._client_ready2(client, db) for mod in self.modules])  # pylint: disable=W0212
         except Exception:
             logging.exception("Failed to send mod init complete signal")
         if self.added_modules:
             await self.added_modules(self)
 
-    async def send_ready_one(self, mod, client, db, allclients, core=False):
-        if core:
-            mod.allclients = allclients
+    async def send_ready_one(self, mod, client, db, allclients):
+        mod.allclients = allclients
 
         try:
             await mod.client_ready(client, db)
@@ -310,6 +314,7 @@ class Modules():
             if classname in (module.name, module.__class__.__name__):
                 worked += [module.__module__]
                 logging.debug("Removing module for unload %r", module)
+                asyncio.ensure_future(module.on_unload())  # call module unload callback
                 self.modules.remove(module)
                 to_remove += module.commands.values()
                 if hasattr(module, "watcher"):

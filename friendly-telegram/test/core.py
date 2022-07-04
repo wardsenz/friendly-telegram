@@ -9,6 +9,8 @@ user_modules = None
 
 class TestManager:
     restart = asyncio.Future()
+    tests = 0
+    failed = 0
 
     def __init__(self, client, db, allclients, start_stage):
         self._client = client

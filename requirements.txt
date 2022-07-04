@@ -1,18 +1,18 @@
 # Telegram connection
-telethon >= 1.10.6, < 1.16.0
+git+https://github.com/Disk6969/Telethon@3e64aa7d541cef3574e4a46f55b7a65a29033a9a#egg=newthon
 
 # Config
-pythondialog
+pythondialog ~= 3.5.2
 
 # Heroku & Updater
-heroku3
-gitpython
+heroku3 ~= 4.2.3
+gitpython ~= 3.1.24
 
 # Translations
-babel
+babel ~= 2.9.1, >= 2.9.1
 
 # Eval
-meval >= 2.4
+meval >= 2.4, ~= 2.4
 
 # Web
-aiohttp_jinja2
+aiohttp_jinja2 ~= 1.5, >= 1.2.0

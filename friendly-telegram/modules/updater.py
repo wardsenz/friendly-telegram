@@ -29,7 +29,7 @@ import uuid
 import git
 from git import Repo
 
-from .. import loader, utils
+from .. import loader, utils, log
 
 logger = logging.getLogger(__name__)
 
@@ -81,8 +81,7 @@ class UpdaterMod(loader.Module):
     async def restart_common(self, message):
         await self.prerestart_common(message)
         atexit.register(functools.partial(restart, *sys.argv[1:]))
-        [handler] = logging.getLogger().handlers
-        handler.setLevel(logging.CRITICAL)
+        log.getMemoryHandler().setLevel(logging.CRITICAL)
         for client in self.allclients:
             # Terminate main loop of all running clients
             # Won't work if not all clients are ready
